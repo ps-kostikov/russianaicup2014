@@ -178,12 +178,15 @@ class Strike(Action):
         self.start_tick = None
 
     def do(self, env):
-        if self.start_tick is None:
-            self.start_tick = env.world.tick
+        if env.me.remaining_cooldown_ticks:
+            return
 
-        if not self.delay or env.world.tick - self.start_tick >= self.delay:
+        if not self.delay or (self.start_tick is not None and env.world.tick - self.start_tick >= self.delay):
             env.move.action = ActionType.STRIKE
             self.done = True
+            print 'tick = ', env.world.tick, 'Strike done'
             return
 
         env.move.action = ActionType.SWING
+        if self.start_tick is None:
+            self.start_tick = env.world.tick

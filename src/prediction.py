@@ -5,6 +5,10 @@ def friction_factor():
     return 0.98
 
 
+def puck_friction_factor():
+    return 0.999
+
+
 # 1-dimension model
 def count_vn(v0, a, n):
     k = friction_factor()
