@@ -1,6 +1,3 @@
-import math
-import collections
-
 from model.ActionType import ActionType
 from model.HockeyistState import HockeyistState
 from model.HockeyistType import HockeyistType
@@ -11,12 +8,10 @@ from model.World import World
 
 import geometry
 import experiments
+import environment
 
 
 STRIKE_ANGLE = geometry.degree_to_rad(1.0)
-
-Env = collections.namedtuple('Env', 'me world game move')
-Point = collections.namedtuple('Point', 'x y')
 
 
 def get_nearest_hockeyist(world, unit):
@@ -37,48 +32,24 @@ def get_goal_point(env):
     goal_x = 0.5 * (opponent_player.net_back + opponent_player.net_front)
     goal_y = 0.5 * (opponent_player.net_bottom + opponent_player.net_top)
     goal_y += (0.5 if env.me.y < goal_y else -0.5) * env.game.goal_net_height
-    return Point(goal_x, goal_y)
-
-
-def move_to_point(env, point):
-    MIN_DIST = 40
-    MEDIUM_DIST = 40
-    MIN_ANGLE = math.pi / 4
-
-    distance = env.me.get_distance_to_unit(point)
-    angle = env.me.get_angle_to_unit(point)
-
-    # already at point
-    if distance < MIN_DIST:
-        return False
-
-    # faster to move forward
-    if distance > MEDIUM_DIST:
-        env.move.turn = angle
-        if abs(angle) < MIN_ANGLE:
-            env.move.speed_up = 1.
-
-    # can reach poing forward or backward
-    if -math.pi / 2. < angle < math.pi / 2.:
-        env.move.turn = angle
-        if -MIN_ANGLE < angle < MIN_ANGLE:
-            env.move.speed_up = 1.
-    else:
-        env.move.turn = -angle
-        if angle > math.pi - MIN_ANGLE or angle < -math.pi + MIN_ANGLE:
-            env.move.speed_up = -1.
-
-    return True
+    return geometry.Point(goal_x, goal_y)
 
 
 class MyStrategy:
 
     def move(self, me, world, game, move):
 
-        env = Env(me, world, game, move)
+        env = environment.Environment(me, world, game, move)
 
         if world.tick == 0:
             self.strike_points = experiments.count_strike_points(env)
+
+        if env.me.state == HockeyistState.SWINGING:
+            if env.me.swing_ticks >= env.game.max_effective_swing_ticks:
+                env.move.action = ActionType.STRIKE
+            else:
+                env.move.action = ActionType.SWING
+            return
 
         if attack_mode(env):
             self.do_attack_actions(env)
@@ -86,9 +57,6 @@ class MyStrategy:
             self.do_defence_actions(env)
 
     def do_attack_actions(self, env):
-        if env.me.state == HockeyistState.SWINGING:
-            env.move.action = ActionType.STRIKE
-            return
 
         if env.world.puck.owner_hockeyist_id == env.me.id:
 
