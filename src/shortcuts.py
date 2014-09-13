@@ -27,3 +27,7 @@ def field_center(env):
     y = (my_player.net_top + my_player.net_bottom) / 2.
 
     return geometry.Point(x, y)
+
+
+def max_tick(env):
+    return env.game.overtime_tick_count + env.game.tick_count

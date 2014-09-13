@@ -1,6 +1,7 @@
 from model.ActionType import ActionType
 
 import geometry
+import prediction
 
 import math
 
@@ -37,6 +38,7 @@ class WaitForTick(Action):
     def do(self, env):
         if env.world.tick >= self.tick:
             self.done = True
+            print 'tick = ', env.world.tick, 'WaitForTick done'
 
 
 class TurnToPoint(Action):
@@ -48,6 +50,7 @@ class TurnToPoint(Action):
         angle = env.me.get_angle_to_unit(self.point)
         if abs(angle) <= geometry.degree_to_rad(1):
             self.done = True
+            print 'tick = ', env.world.tick, 'TurnToPoint done'
             return
 
         env.move.turn = angle
@@ -63,15 +66,49 @@ class MoveToPoint(Action):
         distance = env.me.get_distance_to_unit(self.point)
         angle = env.me.get_angle_to_unit(self.point)
 
-        if distance < 10:
+        if distance < 2:
             self.done = True
+            speed_abs = geometry.vector_abs(env.me.speed_x, env.me.speed_y)
+            print (
+                'tick = ', env.world.tick,
+                'MoveToPoint done',
+                'x = ', env.me.x,
+                'y = ', env.me.y,
+                'speed abs = ', speed_abs
+            )
             return
 
         if abs(angle) > geometry.degree_to_rad(1):
             env.move.turn = angle
             return
 
-        env.move.speed_up = 1.0
+        v0 = geometry.vector_abs(env.me.speed_x, env.me.speed_y)
+        vn = 0
+        a = -env.game.hockeyist_speed_down_factor
+        n = prediction.count_n(v0, a, vn)
+
+        if n is None:
+            env.move.speed_up = 1.0
+            # print 'tick = ', env.world.tick, 'speed = 1. n is None'
+            return
+
+        n = round(n) + 1
+        x0 = 0.
+        xn = prediction.count_xn(x0, v0, a, n)
+
+        # print (
+        #     'v0 = ', v0,
+        #     'n =', n,
+        #     'xn =', xn,
+        #     'dist = ', distance
+        # )
+        # import ipdb; ipdb.set_trace()
+        if xn > distance:
+            # print 'tick = ', env.world.tick, 'speed = -1.'
+            env.move.speed_up = -1.0
+        else:
+            # print 'tick = ', env.world.tick, 'speed = 1.'
+            env.move.speed_up = 1.0
 
 
 class TakePuck(Action):
@@ -79,6 +116,7 @@ class TakePuck(Action):
     def do(self, env):
         if env.world.puck.owner_hockeyist_id == env.me.id:
             self.done = True
+            print 'tick = ', env.world.tick, 'TakePuck done'
             return
 
         if can_take_puck(env):
@@ -92,8 +130,14 @@ class Stop(Action):
     def do(self, env):
         speed_abs = geometry.vector_abs(env.me.speed_x, env.me.speed_y)
         if speed_abs < 0.001:
-            print 'stop done, tick = ', env.world.tick
             self.done = True
+            print (
+                'tick = ', env.world.tick,
+                'Stop done',
+                'x = ', env.me.x,
+                'y = ', env.me.y,
+                'speed abs = ', speed_abs
+            )
             return
 
         angle = geometry.get_angle(

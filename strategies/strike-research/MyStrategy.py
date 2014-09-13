@@ -37,7 +37,7 @@ class MyStrategy:
         #         training_actions.TakePuck(),
         #         training_actions.Stop(),
         #         training_actions.MoveToPoint(
-        #             geometry.Point(500, game.goal_net_top)
+        #             geometry.Point(400, game.goal_net_top)
         #         ),
         #         training_actions.Stop(),
         #         training_actions.TurnToPoint(get_goal_point(env)),
@@ -48,12 +48,13 @@ class MyStrategy:
             self.action_list = training_actions.ActionList(
                 training_actions.WaitForTick(100),
                 training_actions.TakePuck(),
+                training_actions.Stop(),
                 training_actions.MoveToPoint(
                     geometry.Point(shortcuts.field_center(env).y, shortcuts.opponent_player(env).net_top)
                 ),
                 training_actions.Stop(),
                 training_actions.MoveToPoint(
-                    geometry.Point(380, shortcuts.opponent_player(env).net_top)
+                    geometry.Point(350, shortcuts.opponent_player(env).net_top)
                 ),
 
                 # training_actions.MoveToPoint(
