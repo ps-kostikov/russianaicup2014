@@ -57,6 +57,15 @@ def are_intervals_intersect(x1, y1, x2, y2, x3, y3, x4, y4):
 #         print "error !!!"
 #     print aa, ans
 
+def ray_interval_intersection(x1, y1, vx2, vy2, x3, y3, x4, y4):
+    vnorm = math.hypot(vx2, vy2)
+    if vnorm < 0.00001:
+        return None
+    k = 8000. / vnorm
+    x2 = x1 + k * vx2
+    y2 = y1 + k * vy2
+    return intervals_intersection(x1, y1, x2, y2, x3, y3, x4, y4)
+
 
 def get_nearest_point(bx, by, ex, ey, px, py):
     if math.hypot(bx - px, by - py) < 0.0001:

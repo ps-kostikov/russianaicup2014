@@ -48,7 +48,27 @@ class TurnToPoint(Action):
 
     def do(self, env):
         angle = env.me.get_angle_to_unit(self.point)
-        if abs(angle) <= geometry.degree_to_rad(1):
+        if abs(angle) <= geometry.degree_to_rad(0.1):
+            self.done = True
+            print 'tick = ', env.world.tick, 'TurnToPoint done'
+            return
+
+        env.move.turn = angle
+
+
+class TurnToGoal(Action):
+    def get_goal_point(self, env):
+        opponent_player = env.world.get_opponent_player()
+        goal_x = 0.5 * (opponent_player.net_back + opponent_player.net_front)
+        goal_y = 0.5 * (opponent_player.net_bottom + opponent_player.net_top)
+        goal_y += 0.5 * env.game.goal_net_height
+        # print 'goal x = ', goal_x, 'goal_y = ', goal_y
+        return geometry.Point(goal_x, goal_y)
+
+    def do(self, env):
+        point = self.get_goal_point(env)
+        angle = env.me.get_angle_to_unit(point)
+        if abs(angle) <= geometry.degree_to_rad(0.1):
             self.done = True
             print 'tick = ', env.world.tick, 'TurnToPoint done'
             return
@@ -129,7 +149,7 @@ class Stop(Action):
 
     def do(self, env):
         speed_abs = geometry.vector_abs(env.me.speed_x, env.me.speed_y)
-        if speed_abs < 0.001:
+        if speed_abs < 0.0001:
             self.done = True
             print (
                 'tick = ', env.world.tick,
@@ -144,8 +164,10 @@ class Stop(Action):
             math.cos(env.me.angle), math.sin(env.me.angle),
             env.me.speed_x, env.me.speed_y)
         if abs(geometry.rad_to_degree(angle)) < 90:
+            env.move.turn = angle
             env.move.speed_up = -min(1., speed_abs / env.game.hockeyist_speed_down_factor)
         else:
+            env.move.turn = -angle
             env.move.speed_up = min(1., speed_abs / env.game.hockeyist_speed_up_factor)
 
 
