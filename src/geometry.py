@@ -3,6 +3,10 @@ Functions related to geometry evaluations
 '''
 
 import math
+import collections
+
+
+Point = collections.namedtuple('Point', 'x y')
 
 
 def rad_to_degree(rad):
@@ -92,3 +96,12 @@ def get_angle(v1x, v1y, v2x, v2y):
 
 def distance(p1, p2):
     return math.hypot(p1.x - p2.x, p1.y - p2.y)
+
+
+def vector_abs(*args):
+    if len(args) == 1:
+        point = args[0]
+        return math.hypot(point.x, point.y)
+    elif len(args) == 2:
+        x, y = args
+        return math.hypot(x, y)
