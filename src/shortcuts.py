@@ -21,7 +21,7 @@ def my_goalie(env):
 
 def field_center(env):
     x = (env.game.rink_left + env.game.rink_right) / 2.
-    y = (env.game.rink_top + env.game.rink.bottom) / 2.
+    y = (env.game.rink_top + env.game.rink_bottom) / 2.
     return geometry.Point(x, y)
 
 

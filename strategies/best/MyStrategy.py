@@ -10,6 +10,7 @@ from model.Hockeyist import Hockeyist
 from model.World import World
 
 import geometry
+import experiments
 
 
 STRIKE_ANGLE = geometry.degree_to_rad(1.0)
@@ -72,22 +73,12 @@ def move_to_point(env, point):
 
 class MyStrategy:
 
-    # LEFT_STRIKE_POINTS = [
-    #     Point(212, 296.5),
-    #     Point(212, 596.5),
-    # ]
-    LEFT_STRIKE_POINTS = [
-        Point(212, 296.5),
-        Point(212, 596.5),
-    ]
-    RIGHT_STRIKE_POINTS = [
-        Point(812, 296.5),
-        Point(812, 596.5),
-    ]
-
     def move(self, me, world, game, move):
 
         env = Env(me, world, game, move)
+
+        if world.tick == 0:
+            self.strike_points = experiments.count_strike_points(env)
 
         if attack_mode(env):
             self.do_attack_actions(env)
@@ -102,7 +93,9 @@ class MyStrategy:
         if env.world.puck.owner_hockeyist_id == env.me.id:
 
             strike_point = self.get_nearest_strike_point(env)
-            if move_to_point(env, strike_point):
+
+            if env.me.get_distance_to_unit(strike_point) >= 60:
+                experiments.fast_move_to_point(env, strike_point)
                 return
 
             goal_point = get_goal_point(env)
@@ -138,21 +131,6 @@ class MyStrategy:
         return min(*enemy_hockeyists, key=lambda h: h.get_distance_to(x, y))
 
     def get_nearest_strike_point(self, env):
-        opponent_net_point = Point(
-            env.world.get_opponent_player().net_top,
-            env.world.get_opponent_player().net_left,
-        )
-        my_net_point = Point(
-            env.world.get_my_player().net_top,
-            env.world.get_my_player().net_left,
-        )
-        if (geometry.distance(self.LEFT_STRIKE_POINTS[0], opponent_net_point) <
-                geometry.distance(self.LEFT_STRIKE_POINTS[0], my_net_point)):
-            strike_points = self.LEFT_STRIKE_POINTS
-        else:
-            strike_points = self.RIGHT_STRIKE_POINTS
-
-
         return min(
-            *strike_points,
+            *self.strike_points,
             key=lambda p: env.me.get_distance_to_unit(p))
