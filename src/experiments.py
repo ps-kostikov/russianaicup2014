@@ -8,11 +8,11 @@ def count_strike_points(env):
     opponent_is_left = 1. if opponent.net_back < shortcuts.rink_center(env).x else -1.
     return [
         geometry.Point(
-            opponent.net_front + opponent_is_left * env.game.goal_net_height * 1.4,
+            opponent.net_front + opponent_is_left * env.game.goal_net_height * 1.5,
             env.game.goal_net_top - 50
         ),
         geometry.Point(
-            opponent.net_front + opponent_is_left * env.game.goal_net_height * 1.4,
+            opponent.net_front + opponent_is_left * env.game.goal_net_height * 1.5,
             env.game.goal_net_top + env.game.goal_net_height + 50
         )
     ]
