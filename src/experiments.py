@@ -18,6 +18,15 @@ def count_strike_points(env):
     ]
 
 
+def count_defence_point(env):
+    im_left = shortcuts.im_left(env)
+    my_player = shortcuts.my_player(env)
+    return geometry.Point(
+        my_player.net_front + im_left * env.game.goal_net_height / 2.,
+        shortcuts.field_center(env).y
+    )
+
+
 def fast_move_to_point(env, point):
     distance = env.me.get_distance_to_unit(point)
     angle = env.me.get_angle_to_unit(point)
@@ -45,5 +54,9 @@ def fast_move_to_point(env, point):
         env.move.speed_up = 1.0
 
 
-def strike(env):
-    pass
+def get_goal_point(env):
+    opponent_player = env.world.get_opponent_player()
+    goal_x = 0.5 * (opponent_player.net_back + opponent_player.net_front)
+    goal_y = 0.5 * (opponent_player.net_bottom + opponent_player.net_top)
+    goal_y += (0.5 if env.me.y < goal_y else -0.5) * env.game.goal_net_height
+    return geometry.Point(goal_x, goal_y)
