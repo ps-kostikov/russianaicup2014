@@ -51,6 +51,19 @@ class MyStrategy:
         else:
             self.attack_without_puck(env)
 
+    def opponent_protect_goal(self, env, goal_point):
+        opponent_player = shortcuts.opponent_player(env)
+        point = geometry.Point(
+            opponent_player.net_front,
+            0.5 * (opponent_player.net_bottom + opponent_player.net_top)
+        )
+        radius = env.game.goal_net_height / 2.
+
+        for h in shortcuts.opponent_field_hockeyists(env):
+            if h.get_distance_to_unit(point) <= radius:
+                return True
+        return False
+
     def attack_with_puck(self, env):
         strike_point = shortcuts.nearest_unit(self.strike_points, env.me)
 
@@ -62,7 +75,10 @@ class MyStrategy:
         basic_actions.turn_to_unit(env, goal_point)
 
         if basic_actions.turned_to_unit(env, goal_point, eps=geometry.degree_to_rad(1.0)):
-            env.move.action = ActionType.SWING
+            if self.opponent_protect_goal(env, goal_point):
+                env.move.action = ActionType.SWING
+            else:
+                env.move.action = ActionType.STRIKE
 
     def attack_without_puck(self, env):
         nearest_opponent = shortcuts.nearest_unit(
@@ -94,5 +110,9 @@ class MyStrategy:
                     env.move.action = ActionType.STRIKE
                     return
 
-        env.move.action = ActionType.TAKE_PUCK
+        if shortcuts.can_take_puck(env):
+            env.move.action = ActionType.TAKE_PUCK
+        # for oh in shortcuts.opponent_field_hockeyists(env):
+            # if shortcuts.can_strike_unit(env, oh):
+            #     env.move.action = ActionType.STRIKE
 
