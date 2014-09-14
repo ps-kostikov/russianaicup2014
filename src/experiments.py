@@ -3,19 +3,32 @@ import geometry
 import shortcuts
 
 
-def count_strike_points(env):
-    opponent = shortcuts.opponent_player(env)
-    opponent_is_left = 1. if opponent.net_back < shortcuts.rink_center(env).x else -1.
+def _count_player_weak_points(env, player):
+    is_left = 1. if player.net_back < shortcuts.rink_center(env).x else -1.
     return [
         geometry.Point(
-            opponent.net_front + opponent_is_left * env.game.goal_net_height * 1.5,
+            player.net_front + is_left * env.game.goal_net_height * 1.5,
             env.game.goal_net_top - 50
         ),
         geometry.Point(
-            opponent.net_front + opponent_is_left * env.game.goal_net_height * 1.5,
+            player.net_front + is_left * env.game.goal_net_height * 1.5,
             env.game.goal_net_top + env.game.goal_net_height + 50
         )
     ]
+
+
+def count_strike_points(env):
+    return _count_player_weak_points(
+        env,
+        shortcuts.opponent_player(env)
+    )
+
+
+def count_weak_points(env):
+    return _count_player_weak_points(
+        env,
+        shortcuts.my_player(env)
+    )
 
 
 def count_defence_point(env):

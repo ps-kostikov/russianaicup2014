@@ -60,3 +60,24 @@ def nearest_unit(units, target):
         *units,
         key=lambda u: geometry.distance(u, target)
     )
+
+
+def can_take_puck(env):
+    distance = env.me.get_distance_to_unit(env.world.puck)
+    angle = env.me.get_angle_to_unit(env.world.puck)
+
+    return distance <= env.game.stick_length and abs(angle) <= env.game.stick_sector / 2.
+
+
+def can_strike_unit(env, unit):
+    distance = env.me.get_distance_to_unit(unit)
+    angle = env.me.get_angle_to_unit(unit)
+
+    return distance <= env.game.stick_length and abs(angle) <= env.game.stick_sector / 2.
+
+
+def hockeyist_with_puck(env):
+    for h in env.world.hockeyists:
+        if h.id == env.world.puck.owner_hockeyist_id:
+            return h
+    return None
