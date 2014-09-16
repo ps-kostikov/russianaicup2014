@@ -43,6 +43,14 @@ def are_intervals_intersect(x1, y1, x2, y2, x3, y3, x4, y4):
     return intervals_intersection(x1, y1, x2, y2, x3, y3, x4, y4) is not None
 
 
+def interval_interval_intersection(p1, p2, p3, p4):
+    return intervals_intersection(
+        p1.x, p1.y,
+        p2.x, p2.y,
+        p3.x, p3.y,
+        p4.x, p4.y
+    )
+
 # for aa, correct in [
 #         ((0, 0, 0, 1, 0, 0, 1, 0), True),
 #         ((0, 0.5, 0, 1, 0.5, 0, 1, 0), False),
