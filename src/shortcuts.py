@@ -11,12 +11,27 @@ def opponent_player(env):
     return env.world.get_opponent_player()
 
 
-def my_goalie(env):
-    my_player = env.world.get_my_player()
+def opponent_goal_interval(env):
+    op = opponent_player(env)
+    return [
+        geometry.Point(op.net_front, op.net_top),
+        geometry.Point(op.net_front, op.net_bottom),
+    ]
+
+
+def goalie(env, player):
     for h in env.world.hockeyists:
-        if h.player_id == my_player.id and h.type == HockeyistType.GOALIE:
+        if h.player_id == player.id and h.type == HockeyistType.GOALIE:
             return h
     return None
+
+
+def my_goalie(env):
+    return goalie(env, my_player(env))
+
+
+def opponent_goalie(env):
+    return goalie(env, opponent_player(env))
 
 
 def field_center(env):

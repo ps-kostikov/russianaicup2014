@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 '''
 Functions related to geometry evaluations
 '''
@@ -10,11 +12,11 @@ Point = collections.namedtuple('Point', 'x y')
 
 
 def rad_to_degree(rad):
-    return (rad * 180) / math.pi
+    return (rad * 180.) / math.pi
 
 
 def degree_to_rad(degree):
-    return (degree * math.pi) / 180
+    return (degree * math.pi) / 180.
 
 
 def intervals_intersection(x1, y1, x2, y2, x3, y3, x4, y4):
@@ -33,7 +35,7 @@ def intervals_intersection(x1, y1, x2, y2, x3, y3, x4, y4):
     s = (c2 * a1 - c1 * a2) / d
 
     if 0 <= t <= 1 and 0 <= s <= 1:
-        return (x2 * t + (1 - t) * x1, y2 * t + (1 - t) * y1)
+        return Point(x2 * t + (1 - t) * x1, y2 * t + (1 - t) * y1)
     return None
 
 
@@ -67,11 +69,20 @@ def ray_interval_intersection(x1, y1, vx2, vy2, x3, y3, x4, y4):
     return intervals_intersection(x1, y1, x2, y2, x3, y3, x4, y4)
 
 
+def ray_interval_intersection_v2(p1, v2, p3, p4):
+    return ray_interval_intersection(
+        p1.x, p1.y,
+        v2.x, v2.y,
+        p3.x, p3.y,
+        p4.x, p4.y
+    )
+
+
 def get_nearest_point(bx, by, ex, ey, px, py):
     if math.hypot(bx - px, by - py) < 0.0001:
-        return bx, by
+        return Point(bx, by)
     if math.hypot(ex - px, ey - py) < 0.0001:
-        return ex, ey
+        return Point(ex, ey)
     ebx = bx - ex
     eby = by - ey
     l_eb = math.hypot(ebx, eby)
@@ -89,10 +100,33 @@ def get_nearest_point(bx, by, ex, ey, px, py):
     nx = ex + nebx * math.cos(angle) * l_ep
     ny = ey + neby * math.cos(angle) * l_ep
 
-    return nx, ny
+    return Point(nx, ny)
+
+
+def interval_point_nearest_point(ibegin, iend, point):
+    return get_nearest_point(ibegin.x, ibegin.y, iend.x, iend.y, point.x, point.y)
+
+
+def ray_point_nearest_point(ray_begin, ray_vector, point):
+    vnorm = math.hypot(ray_vector.x, ray_vector.y)
+    if vnorm < 0.00001:
+        return None
+    k = 8000. / vnorm
+    ray_end = Point(
+        ray_begin.x + k * ray_vector.x,
+        ray_begin.y + k * ray_vector.y
+    )
+
+    if ray_ray_angle(ray_end, ray_begin, point) > degree_to_rad(90):
+        return ray_begin
+
+    return interval_point_nearest_point(ray_begin, ray_end, point)
 
 
 def get_angle(v1x, v1y, v2x, v2y):
+    '''
+    угол между векторами (от 0 до pi)
+    '''
     l1 = math.hypot(v1x, v1y)
     l2 = math.hypot(v2x, v2y)
     prod = (v1x * v2x + v1y * v2y) / (l1 * l2)
@@ -101,6 +135,18 @@ def get_angle(v1x, v1y, v2x, v2y):
     if prod > 1:
         prod = 1
     return math.acos(prod)
+
+
+def ray_ray_angle(point1, point0, point2):
+    '''
+    угол между лучами (от 0 до pi)
+    '''
+    return get_angle(
+        point1.x - point0.x,
+        point1.y - point0.y,
+        point2.x - point0.x,
+        point2.y - point0.y
+    )
 
 
 def distance(p1, p2):
