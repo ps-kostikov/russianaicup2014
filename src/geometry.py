@@ -115,6 +115,16 @@ def interval_point_nearest_point(ibegin, iend, point):
     return get_nearest_point(ibegin.x, ibegin.y, iend.x, iend.y, point.x, point.y)
 
 
+def interval_point_distance(ibegin, iend, point):
+    if ray_ray_angle(ibegin, iend, point) >= degree_to_rad(90):
+        return distance(point, iend)
+    if ray_ray_angle(iend, ibegin, point) >= degree_to_rad(90):
+        return distance(point, ibegin)
+
+    np = interval_point_nearest_point(ibegin, iend, point)
+    return distance(np, point)
+
+
 def ray_point_nearest_point(ray_begin, ray_vector, point):
     vnorm = math.hypot(ray_vector.x, ray_vector.y)
     if vnorm < 0.00001:
@@ -168,3 +178,10 @@ def vector_abs(*args):
     elif len(args) == 2:
         x, y = args
         return math.hypot(x, y)
+
+
+def point_plus_vector(point, angle, length):
+    return Point(
+        point.x + math.cos(angle) * length,
+        point.y + math.sin(angle) * length
+    )
