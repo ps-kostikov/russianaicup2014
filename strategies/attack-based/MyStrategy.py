@@ -11,6 +11,7 @@ import experiments
 import environment
 import shortcuts
 import basic_actions
+import prediction
 
 
 class MyStrategy:
