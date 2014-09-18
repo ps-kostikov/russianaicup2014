@@ -17,6 +17,7 @@ local_with_local:
 
 test:
 	PYTHONPATH=src:. python tests/test_geometry.py
+	PYTHONPATH=src:. python tests/test_algorithm.py
 
 clean:
 	find -name \*.pyc -exec rm {} \;
