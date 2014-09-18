@@ -126,6 +126,13 @@ def ray_point_nearest_point(ray_begin, ray_vector, point):
     return interval_point_nearest_point(ray_begin, ray_end, point)
 
 
+def ray_point_distance(ray_begin, ray_vector, point):
+    return distance(
+        point,
+        ray_point_nearest_point(ray_begin, ray_vector, point)
+    )
+
+
 def get_angle(v1x, v1y, v2x, v2y):
     '''
     угол между векторами (от 0 до pi)
@@ -163,6 +170,13 @@ def vector_abs(*args):
     elif len(args) == 2:
         x, y = args
         return math.hypot(x, y)
+
+
+def diff(point_begin, point_end):
+    return Point(
+        point_end.x - point_begin.x,
+        point_end.y - point_begin.y
+    )
 
 
 def point_plus_vector(point, angle, length):

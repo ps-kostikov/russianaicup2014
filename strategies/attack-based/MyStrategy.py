@@ -12,6 +12,7 @@ import environment
 import shortcuts
 import basic_actions
 import prediction
+import assessments
 
 
 class MyStrategy:
@@ -53,15 +54,14 @@ class MyStrategy:
             self.attack_without_puck(env)
 
     def opponent_protect_goal(self, env, goal_point):
-        opponent_player = shortcuts.opponent_player(env)
-        point = geometry.Point(
-            opponent_player.net_front,
-            0.5 * (opponent_player.net_bottom + opponent_player.net_top)
-        )
-        radius = env.game.goal_net_height / 2.
 
         for h in shortcuts.opponent_field_hockeyists(env):
-            if h.get_distance_to_unit(point) <= radius:
+            distance = geometry.ray_point_distance(
+                env.world.puck,
+                geometry.diff(env.world.puck, goal_point),
+                h
+            )
+            if distance <= h.radius:
                 return True
         return False
 
