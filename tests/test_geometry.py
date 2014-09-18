@@ -21,6 +21,29 @@ class TestGeometry(unittest.TestCase):
                 answer
             )
 
+    def test_point_in_convex_polygon(self):
+        polygon = [
+            geometry.Point(0, 0),
+            geometry.Point(1, 0),
+            geometry.Point(1, 1),
+            geometry.Point(0, 1),
+        ]
+        self.assertTrue(geometry.point_in_convex_polygon(
+            geometry.Point(0.5, 0.5),
+            polygon
+        ))
+        self.assertFalse(geometry.point_in_convex_polygon(
+            geometry.Point(1.5, 0.5),
+            polygon
+        ))
+        self.assertFalse(geometry.point_in_convex_polygon(
+            geometry.Point(1.00001, 0.00001),
+            polygon
+        ))
+        self.assertTrue(geometry.point_in_convex_polygon(
+            geometry.Point(0.99999, 0.00001),
+            polygon
+        ))
 
 if __name__ == '__main__':
     unittest.main()

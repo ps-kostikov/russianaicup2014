@@ -170,3 +170,12 @@ def point_plus_vector(point, angle, length):
         point.x + math.cos(angle) * length,
         point.y + math.sin(angle) * length
     )
+
+
+def point_in_convex_polygon(point, list_points):
+    next_points = [list_points[-1]] + list_points[:-1]
+    angle_sum = sum(
+        ray_ray_angle(p1, point, p2)
+        for p1, p2 in zip(list_points, next_points)
+    )
+    return abs(angle_sum - degree_to_rad(360)) < 0.0001
