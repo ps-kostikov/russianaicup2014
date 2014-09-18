@@ -51,21 +51,6 @@ def interval_interval_intersection(p1, p2, p3, p4):
         p4.x, p4.y
     )
 
-# for aa, correct in [
-#         ((0, 0, 0, 1, 0, 0, 1, 0), True),
-#         ((0, 0.5, 0, 1, 0.5, 0, 1, 0), False),
-#         ((0, 1, 1, 0, 0, 0, 1, 1), True),
-#         ((0, 1, 0.25, 0.75, 0, 0, 1, 1), False),
-#         ((0, 0, 1, 1, 0, 1, 1, 1.0004), False),
-#         ((0, 0, 1, 1, 0, 1, 1, 0.999), True),
-#         ((0, 0, 1, 1, 0, 1, 0.99, 1), False),
-#         ((0, 0, 0, 1, 1, 0, 1, 1), False),
-#         ]:
-#     ans = are_intervals_intersect(*aa)
-#     print intervals_intersection(*aa)
-#     if ans != correct:
-#         print "error !!!"
-#     print aa, ans
 
 def ray_interval_intersection(x1, y1, vx2, vy2, x3, y3, x4, y4):
     vnorm = math.hypot(vx2, vy2)
