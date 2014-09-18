@@ -42,6 +42,25 @@ def count_defence_point(env):
 
 def fast_move_to_point(env, point):
     distance = env.me.get_distance_to_unit(point)
+    mirrow_point = geometry.Point(
+        2 * env.me.x - point.x,
+        2 * env.me.y - point.y
+    )
+    time_turn_forward = abs(env.me.get_angle_to_unit(point)) / env.game.hockeyist_turn_angle_factor
+    time_move_forward = prediction.count_n_by_x(
+        0, 0, env.game.hockeyist_speed_up_factor, distance)
+
+    time_turn_backward = abs(env.me.get_angle_to_unit(mirrow_point)) / env.game.hockeyist_turn_angle_factor
+    time_move_backward = prediction.count_n_by_x(
+        0, 0, env.game.hockeyist_speed_down_factor, distance)
+    if time_turn_backward + time_move_backward > time_turn_forward + time_move_forward:
+        fast_move_to_point_forward(env, point)
+    else:
+        fast_move_to_point_backward(env, point)
+
+
+def fast_move_to_point_forward(env, point):
+    distance = env.me.get_distance_to_unit(point)
     angle = env.me.get_angle_to_unit(point)
 
     if abs(angle) > geometry.degree_to_rad(1):
@@ -65,6 +84,37 @@ def fast_move_to_point(env, point):
         env.move.speed_up = -1.0
     else:
         env.move.speed_up = 1.0
+
+
+def fast_move_to_point_backward(env, point):
+    distance = env.me.get_distance_to_unit(point)
+    mirrow_point = geometry.Point(
+        2 * env.me.x - point.x,
+        2 * env.me.y - point.y
+    )
+    angle = env.me.get_angle_to_unit(mirrow_point)
+
+    if abs(angle) > geometry.degree_to_rad(1):
+        env.move.turn = angle
+        return
+
+    v0 = geometry.vector_abs(env.me.speed_x, env.me.speed_y)
+    vn = 0
+    a = -env.game.hockeyist_speed_up_factor
+    n = prediction.count_n(v0, a, vn)
+
+    if n is None:
+        env.move.speed_up = -1.0
+        return
+
+    n = round(n) + 1
+    x0 = 0.
+    xn = prediction.count_xn(x0, v0, a, n)
+
+    if xn > distance:
+        env.move.speed_up = 1.0
+    else:
+        env.move.speed_up = -1.0
 
 
 def get_goal_point(env):

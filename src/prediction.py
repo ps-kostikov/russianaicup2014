@@ -4,6 +4,7 @@ import math
 
 import shortcuts
 import geometry
+import algorithm
 
 
 class UnitShadow:
@@ -23,23 +24,19 @@ def puck_friction_factor():
 
 
 # 1-dimension model
-def count_vn(v0, a, n, k=None):
+def count_vn(v0, a, n, k=friction_factor()):
     '''
     считаем скорость через n тиков
     '''
-    if k is None:
-        k = friction_factor()
     kn = k ** n
     return v0 * kn + (a * k) * (1 - kn) / (1. - k)
 
 
 # 1-dimension model
-def count_n(v0, a, vn, k=None):
+def count_n(v0, a, vn, k=friction_factor()):
     '''
     считаем количество тиков при заданных v0 vn
     '''
-    if k is None:
-        k = friction_factor()
     q = k / (1. - k)
     numerator = vn - a * q
     denominator = v0 - a * q
@@ -57,21 +54,26 @@ def count_n(v0, a, vn, k=None):
     return math.log(kn, k)
 
 
-def count_n_by_x(x0, v0, a, xn):
+def count_n_by_x(x0, v0, a, xn, k=friction_factor()):
     '''
     считаем количество тиков при заданных x0 v0 xn
     сложность log(количество тиков)
     '''
-    raise NotImplemented()
+    def f(n):
+        return xn - count_xn(x0, v0, a, n, k)
+
+    # Это не совсем точно, может и доедем еще на v0
+    if a * (xn - x0) < 0:
+        return None
+
+    return algorithm.binary_search(0, 8000, f, 0.01)
 
 
 # 1-dimension model
-def count_xn(x0, v0, a, n, k=None):
+def count_xn(x0, v0, a, n, k=friction_factor()):
     '''
     считаем позицию через n тиков при x0 v0
     '''
-    if k is None:
-        k = friction_factor()
     kn = k ** n
     q = k / (1. - k)
     return x0 + v0 * q * (1. - kn) + n * a * q - a * q * q * (1. - kn)
