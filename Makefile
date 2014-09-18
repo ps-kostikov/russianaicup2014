@@ -15,6 +15,8 @@ local_with_local:
 	sleep 2
 	PYTHONPATH=strategies/$(PLAYER2):src:. python Runner.py 127.0.0.1 31002 0000000000000000
 
+test:
+	PYTHONPATH=src:. python tests/test_geometry.py
 
 clean:
 	find -name \*.pyc -exec rm {} \;
