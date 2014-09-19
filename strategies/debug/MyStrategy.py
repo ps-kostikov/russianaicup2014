@@ -12,6 +12,7 @@ from model.World import World
 
 import shortcuts
 import environment
+import geometry
 
 
 class MyStrategy:
