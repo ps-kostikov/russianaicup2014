@@ -13,6 +13,7 @@ import shortcuts
 import basic_actions
 import prediction
 import assessments
+import algorithm
 
 
 class MyStrategy:
@@ -22,7 +23,9 @@ class MyStrategy:
         env = environment.Environment(me, world, game, move)
 
         if world.tick == 0:
-            self.strike_points = experiments.count_strike_points(env)
+            self.attack_polygons = experiments.count_attack_polygons(
+                env,
+                shortcuts.opponent_player(env))
             self.weak_points = experiments.count_weak_points(env)
 
         if env.me.state == HockeyistState.SWINGING:
@@ -66,9 +69,18 @@ class MyStrategy:
         return False
 
     def attack_with_puck(self, env):
-        strike_point = shortcuts.nearest_unit(self.strike_points, env.me)
+        if any(geometry.point_in_convex_polygon(env.me, p) for p in self.attack_polygons):
+            strike_point = env.me
+
+        else:
+            strike_point = algorithm.best_point_for_polynoms(
+                self.attack_polygons,
+                f=lambda p: -assessments.ticks_to_reach_point(env, env.me, p))
+        # strike_point = geometry.convex_polygons_nearest_point(
+        #     self.attack_polygons, env.me)
 
         if env.me.get_distance_to_unit(strike_point) >= 60:
+            # print strike_point
             experiments.fast_move_to_point(env, strike_point)
             return
 

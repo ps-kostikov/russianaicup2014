@@ -62,9 +62,9 @@ def count_attack_polygons(env, player):
         else:
             attack_y_min = env.game.rink_top + 30
         if is_down:
-            attack_y_max = player.net_bottom - shortcuts.goalie_radius()
+            attack_y_max = player.net_bottom - shortcuts.goalie_radius() - 30
         else:
-            attack_y_max = player.net_top + shortcuts.goalie_radius()
+            attack_y_max = player.net_top + shortcuts.goalie_radius() + 30
 
         attack_x_min = env.game.rink_left
         attack_x_max = env.game.rink_right

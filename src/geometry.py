@@ -193,6 +193,11 @@ def angle_vector(angle, length):
     )
 
 
+def polygon_intervals(polygon):
+    next_points = [polygon.points[-1]] + polygon.points[:-1]
+    return list(zip(polygon.points, next_points))
+
+
 def point_in_convex_polygon(point, polygon):
     for p in polygon.points:
         if distance(point, p) < 0.00001:
