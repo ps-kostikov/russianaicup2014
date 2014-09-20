@@ -9,6 +9,7 @@ import collections
 
 
 Point = collections.namedtuple('Point', 'x y')
+Polygon = collections.namedtuple('Polygon', 'points')
 
 
 def rad_to_degree(rad):
@@ -97,15 +98,14 @@ def get_nearest_point(bx, by, ex, ey, px, py):
 
 
 def interval_point_nearest_point(ibegin, iend, point):
+    if ray_ray_angle(ibegin, iend, point) >= degree_to_rad(90):
+        return iend
+    if ray_ray_angle(iend, ibegin, point) >= degree_to_rad(90):
+        return ibegin
     return get_nearest_point(ibegin.x, ibegin.y, iend.x, iend.y, point.x, point.y)
 
 
 def interval_point_distance(ibegin, iend, point):
-    if ray_ray_angle(ibegin, iend, point) >= degree_to_rad(90):
-        return distance(point, iend)
-    if ray_ray_angle(iend, ibegin, point) >= degree_to_rad(90):
-        return distance(point, ibegin)
-
     np = interval_point_nearest_point(ibegin, iend, point)
     return distance(np, point)
 
@@ -186,10 +186,33 @@ def point_plus_vector(point, angle, length):
     )
 
 
-def point_in_convex_polygon(point, list_points):
-    next_points = [list_points[-1]] + list_points[:-1]
+def point_in_convex_polygon(point, polygon):
+    for p in polygon.points:
+        if distance(point, p) < 0.00001:
+            return True
+    next_points = [polygon.points[-1]] + polygon.points[:-1]
     angle_sum = sum(
         ray_ray_angle(p1, point, p2)
-        for p1, p2 in zip(list_points, next_points)
+        for p1, p2 in zip(polygon.points, next_points)
     )
     return abs(angle_sum - degree_to_rad(360)) < 0.0001
+
+
+def convex_polygon_point_nearest_point(polygon, point):
+    if point_in_convex_polygon(point, polygon):
+        return point
+    next_points = [polygon.points[-1]] + polygon.points[:-1]
+    np_dist = []
+    for p1, p2 in zip(polygon.points, next_points):
+        np = interval_point_nearest_point(p1, p2, point)
+        dist = distance(np, point)
+        np_dist.append((np, dist))
+    return min(np_dist, key=lambda x: x[1])[0]
+
+
+def convex_polygon_point_distance(polygon, point):
+    return distance(
+        point,
+        convex_polygon_point_nearest_point(polygon, point)
+    )
+
