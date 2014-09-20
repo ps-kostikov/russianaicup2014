@@ -2,6 +2,8 @@ from model.HockeyistType import HockeyistType
 
 import geometry
 
+import math
+
 
 def my_player(env):
     return env.world.get_my_player()
@@ -11,12 +13,15 @@ def opponent_player(env):
     return env.world.get_opponent_player()
 
 
-def opponent_goal_interval(env):
-    op = opponent_player(env)
+def goal_interval(env, player):
     return [
-        geometry.Point(op.net_front, op.net_top),
-        geometry.Point(op.net_front, op.net_bottom),
+        geometry.Point(player.net_front, player.net_top),
+        geometry.Point(player.net_front, player.net_bottom),
     ]
+
+
+def opponent_goal_interval(env):
+    return goal_interval(env, opponent_player(env))
 
 
 def goalie(env, player):
@@ -53,8 +58,12 @@ def max_tick(env):
     return env.game.overtime_tick_count + env.game.tick_count
 
 
+def player_left(env, player):
+    return 1. if player.net_back < rink_center(env).x else -1.
+
+
 def im_left(env):
-    return 1. if my_player(env).net_back < rink_center(env).x else -1.
+    return player_left(env, my_player(env))
 
 
 def my_field_hockeyists(env):
@@ -101,3 +110,15 @@ def hockeyist_with_puck(env):
         if h.id == env.world.puck.owner_hockeyist_id:
             return h
     return None
+
+
+def strike_power(env, swing_ticks):
+    env.game.strike_power_base_factor + env.game.strike_power_growth_factor * swing_ticks
+
+
+def puck_speed_abs_after_strike(env, hockeyist):
+    return (
+        20. * strike_power(env, hockeyist.swing_ticks) +
+        hockeyist.speed_x * math.cos(hockeyist.angle) +
+        hockeyist.speed_y * math.sin(hockeyist.angle)
+    )

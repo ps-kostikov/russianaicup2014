@@ -186,13 +186,15 @@ def goalie_can_save(env, puck=None):
     return distance_to_nearest_point <= goalie.radius + env.world.puck.radius
 
 
-def goalie_can_save_straight(env, puck=None, goalie=None):
+def goalie_can_save_straight(env, puck=None, player=None, goalie=None):
     if puck is None:
         puck = env.world.puck
-    goal_interval = shortcuts.opponent_goal_interval(env)
+    if player is None:
+        player = shortcuts.opponent_player(env)
     if goalie is None:
-        goalie = shortcuts.opponent_goalie(env)
-    my_goalie = shortcuts.my_goalie(env)
+        goalie = shortcuts.goalie(env, player)
+
+    goal_interval = shortcuts.goal_interval(env, player)
 
     intersection = geometry.ray_interval_intersection(
         puck.x, puck.y, puck.speed_x, puck.speed_y,
@@ -202,7 +204,7 @@ def goalie_can_save_straight(env, puck=None, goalie=None):
     if intersection is None:
         return True
 
-    if goalie is None or my_goalie is None:
+    if goalie is None:
         return False
 
     old_puck = puck

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import prediction
 import geometry
 import shortcuts
@@ -29,6 +31,68 @@ def count_weak_points(env):
         env,
         shortcuts.my_player(env)
     )
+
+
+def count_attack_polygons(env, player):
+    is_left = shortcuts.player_left(env, player)
+    left_sign = 1 if is_left else -1
+
+    angle_min = geometry.degree_to_rad(37)
+    angle_max = geometry.degree_to_rad(53)
+
+    polygons = []
+    # down_sign = 1 - нижняя половина
+    for down_sign in (-1, 1):
+        is_down = 1 if down_sign > 0 else 0
+
+        corner = geometry.Point(
+            player.net_front,
+            env.game.goal_net_top + is_down * env.game.goal_net_height)
+
+        # attack_y_min - линия ближе к границе
+        # attack_y_max - линия ближе к воротам
+        if is_down:
+            attack_y_min = env.game.rink_bottom
+        else:
+            attack_y_min = env.game.rink_top
+        attack_y_max = corner.y - down_sign * shortcuts.goalie_radius()
+
+        attack_x_min = env.game.rink_left
+        attack_x_max = env.game.rink_right
+
+        angle_sign = left_sign * down_sign
+        if is_left:
+            angle_shift = 0.
+        else:
+            angle_shift = geometry.degree_to_rad(180)
+
+        p1 = geometry.ray_interval_intersection_v2(
+            corner,
+            geometry.angle_vector(angle_sign * angle_min + angle_shift, 1),
+            geometry.Point(attack_x_min, attack_y_max),
+            geometry.Point(attack_x_max, attack_y_max)
+        )
+        p2 = geometry.ray_interval_intersection_v2(
+            corner,
+            geometry.angle_vector(angle_sign * angle_min + angle_shift, 1),
+            geometry.Point(attack_x_min, attack_y_min),
+            geometry.Point(attack_x_max, attack_y_min)
+        )
+        p3 = geometry.ray_interval_intersection_v2(
+            corner,
+            geometry.angle_vector(angle_sign * angle_max + angle_shift, 1),
+            geometry.Point(attack_x_min, attack_y_min),
+            geometry.Point(attack_x_max, attack_y_min)
+        )
+        p4 = geometry.ray_interval_intersection_v2(
+            corner,
+            geometry.angle_vector(angle_sign * angle_max + angle_shift, 1),
+            geometry.Point(attack_x_min, attack_y_max),
+            geometry.Point(attack_x_max, attack_y_max)
+        )
+        polygons.append(geometry.Polygon([p1, p2, p3, p4]))
+
+    return polygons
 
 
 def count_defence_point(env):
@@ -117,9 +181,11 @@ def fast_move_to_point_backward(env, point):
         env.move.speed_up = -1.0
 
 
-def get_goal_point(env):
+def get_goal_point(env, puck=None):
     opponent_player = env.world.get_opponent_player()
     goal_x = 0.5 * (opponent_player.net_back + opponent_player.net_front)
     goal_y = 0.5 * (opponent_player.net_bottom + opponent_player.net_top)
-    goal_y += (0.5 if env.me.y < goal_y else -0.5) * env.game.goal_net_height
+    if puck is None:
+        puck = env.world.puck
+    goal_y += (0.5 if puck.y < goal_y else -0.5) * env.game.goal_net_height
     return geometry.Point(goal_x, goal_y)
