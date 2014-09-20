@@ -101,18 +101,26 @@ def nearest_unit(units, target):
     )
 
 
+def hockeyist_can_take_puck(env, hockeyist):
+    distance = geometry.distance(hockeyist, env.world.puck)
+    angle = geometry.unit_angle_to(hockeyist, env.world.puck)
+
+    return distance <= env.game.stick_length and abs(angle) <= env.game.stick_sector / 2.
+
+
 def can_take_puck(env):
-    distance = env.me.get_distance_to_unit(env.world.puck)
-    angle = env.me.get_angle_to_unit(env.world.puck)
+    return hockeyist_can_take_puck(env, env.me)
+
+
+def hockeyist_can_strike_unit(env, hockeyist, unit):
+    distance = geometry.distance(hockeyist, unit)
+    angle = geometry.unit_angle_to(hockeyist, unit)
 
     return distance <= env.game.stick_length and abs(angle) <= env.game.stick_sector / 2.
 
 
 def can_strike_unit(env, unit):
-    distance = env.me.get_distance_to_unit(unit)
-    angle = env.me.get_angle_to_unit(unit)
-
-    return distance <= env.game.stick_length and abs(angle) <= env.game.stick_sector / 2.
+    return hockeyist_can_strike_unit(env, env.me, unit)
 
 
 def hockeyist_with_puck(env):

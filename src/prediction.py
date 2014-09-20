@@ -8,11 +8,12 @@ import algorithm
 
 
 class UnitShadow:
-    def __init__(self, x, y, speed_x, speed_y):
+    def __init__(self, x, y, speed_x, speed_y, angle):
         self.x = x
         self.y = y
         self.speed_x = speed_x
         self.speed_y = speed_y
+        self.angle = angle
 
 
 def friction_factor():
@@ -79,14 +80,25 @@ def count_xn(x0, v0, a, n, k=friction_factor()):
     return x0 + v0 * q * (1. - kn) + n * a * q - a * q * q * (1. - kn)
 
 
-def next_puck_position(env, puck=None):
+def next_puck_position(env, puck=None, tick=1):
     if puck is None:
         puck = env.world.puck
     return UnitShadow(
-        count_xn(puck.x, puck.speed_x, 0, 1, k=puck_friction_factor()),
-        count_xn(puck.y, puck.speed_y, 0, 1, k=puck_friction_factor()),
-        count_vn(puck.speed_x, 0, 1, k=puck_friction_factor()),
-        count_vn(puck.speed_y, 0, 1, k=puck_friction_factor())
+        count_xn(puck.x, puck.speed_x, 0, tick, k=puck_friction_factor()),
+        count_xn(puck.y, puck.speed_y, 0, tick, k=puck_friction_factor()),
+        count_vn(puck.speed_x, 0, tick, k=puck_friction_factor()),
+        count_vn(puck.speed_y, 0, tick, k=puck_friction_factor()),
+        puck.angle
+    )
+
+
+def next_hockeyist_position(env, hockeyist, tick):
+    return UnitShadow(
+        count_xn(hockeyist.x, hockeyist.speed_x, 0, tick, k=friction_factor()),
+        count_xn(hockeyist.y, hockeyist.speed_y, 0, tick, k=friction_factor()),
+        count_vn(hockeyist.speed_x, 0, tick, k=friction_factor()),
+        count_vn(hockeyist.speed_y, 0, tick, k=friction_factor()),
+        hockeyist.angle
     )
 
 
@@ -109,7 +121,7 @@ def next_goalie_position(env, goalie, puck=None):
         shift_y = max(diff, -env.game.goalie_max_speed)
         next_goalie_y = max(min_goalie_y, goalie.y + shift_y)
 
-    return UnitShadow(next_goalie_x, next_goalie_y, 0., 0.)
+    return UnitShadow(next_goalie_x, next_goalie_y, 0., 0., goalie.angle)
 
 
 def goalie_can_save(env, puck=None):

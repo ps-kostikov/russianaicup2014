@@ -163,6 +163,19 @@ def distance(p1, p2):
     return math.hypot(p1.x - p2.x, p1.y - p2.y)
 
 
+def unit_angle_to(unit, point):
+    absolute_angle_to = math.atan2(point.y - unit.y, point.x - unit.x)
+    relative_angle_to = absolute_angle_to - unit.angle
+
+    while relative_angle_to > math.pi:
+        relative_angle_to -= 2.0 * math.pi
+
+    while relative_angle_to < -math.pi:
+        relative_angle_to += 2.0 * math.pi
+
+    return relative_angle_to
+
+
 def vector_abs(*args):
     if len(args) == 1:
         point = args[0]

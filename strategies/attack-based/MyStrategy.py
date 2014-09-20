@@ -31,6 +31,8 @@ class MyStrategy:
         if env.me.state == HockeyistState.SWINGING:
             if env.me.swing_ticks >= env.game.max_effective_swing_ticks:
                 env.move.action = ActionType.STRIKE
+            elif assessments.someone_can_reach_me_after_ticks(env, 2):
+                env.move.action = ActionType.STRIKE
             else:
                 env.move.action = ActionType.SWING
             return
@@ -88,10 +90,11 @@ class MyStrategy:
         basic_actions.turn_to_unit(env, goal_point)
 
         if basic_actions.turned_to_unit(env, goal_point, eps=geometry.degree_to_rad(1.0)):
-            if self.opponent_protect_goal(env, goal_point):
-                env.move.action = ActionType.SWING
-            else:
-                env.move.action = ActionType.STRIKE
+            # if self.opponent_protect_goal(env, goal_point):
+            #     env.move.action = ActionType.SWING
+            # else:
+            #     env.move.action = ActionType.STRIKE
+            env.move.action = ActionType.SWING
 
     def attack_without_puck(self, env):
         nearest_opponent = shortcuts.nearest_unit(
