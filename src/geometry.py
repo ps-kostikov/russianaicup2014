@@ -186,6 +186,13 @@ def point_plus_vector(point, angle, length):
     )
 
 
+def angle_vector(angle, length):
+    return Point(
+        math.cos(angle) * length,
+        math.sin(angle) * length
+    )
+
+
 def point_in_convex_polygon(point, polygon):
     for p in polygon.points:
         if distance(point, p) < 0.00001:

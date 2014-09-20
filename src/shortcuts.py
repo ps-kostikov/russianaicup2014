@@ -30,6 +30,11 @@ def my_goalie(env):
     return goalie(env, my_player(env))
 
 
+# HARDCODE
+def goalie_radius():
+    return 30.
+
+
 def opponent_goalie(env):
     return goalie(env, opponent_player(env))
 
