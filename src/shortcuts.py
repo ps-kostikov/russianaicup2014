@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from model.HockeyistType import HockeyistType
 
 import geometry
@@ -58,8 +60,16 @@ def max_tick(env):
     return env.game.overtime_tick_count + env.game.tick_count
 
 
-def player_left(env, player):
+def player_left_sign(env, player):
     return 1. if player.net_back < rink_center(env).x else -1.
+
+
+def player_left(env, player):
+    return player_left_sign(env, player) > 0
+
+
+def im_left_sign(env):
+    return player_left_sign(env, my_player(env))
 
 
 def im_left(env):

@@ -35,6 +35,7 @@ def count_weak_points(env):
 
 def count_attack_polygons(env, player):
     is_left = shortcuts.player_left(env, player)
+    left_sign = shortcuts.player_left_sign(env, player)
     left_sign = 1 if is_left else -1
 
     angle_min = geometry.degree_to_rad(37)
@@ -43,19 +44,27 @@ def count_attack_polygons(env, player):
     polygons = []
     # down_sign = 1 - нижняя половина
     for down_sign in (-1, 1):
-        is_down = 1 if down_sign > 0 else 0
+        is_down = down_sign > 0
+
+        if is_down:
+            corner_y = player.net_top
+        else:
+            corner_y = player.net_bottom
 
         corner = geometry.Point(
             player.net_front,
-            env.game.goal_net_top + is_down * env.game.goal_net_height)
+            corner_y)
 
         # attack_y_min - линия ближе к границе
         # attack_y_max - линия ближе к воротам
         if is_down:
-            attack_y_min = env.game.rink_bottom
+            attack_y_min = env.game.rink_bottom - 30
         else:
-            attack_y_min = env.game.rink_top
-        attack_y_max = corner.y - down_sign * shortcuts.goalie_radius()
+            attack_y_min = env.game.rink_top + 30
+        if is_down:
+            attack_y_max = player.net_bottom - shortcuts.goalie_radius()
+        else:
+            attack_y_max = player.net_top + shortcuts.goalie_radius()
 
         attack_x_min = env.game.rink_left
         attack_x_max = env.game.rink_right
@@ -96,10 +105,10 @@ def count_attack_polygons(env, player):
 
 
 def count_defence_point(env):
-    im_left = shortcuts.im_left(env)
+    im_left_sign = shortcuts.im_left_sign(env)
     my_player = shortcuts.my_player(env)
     return geometry.Point(
-        my_player.net_front + im_left * env.game.goal_net_height / 2.,
+        my_player.net_front + im_left_sign * env.game.goal_net_height / 2.,
         shortcuts.field_center(env).y
     )
 

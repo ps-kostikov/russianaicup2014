@@ -223,3 +223,19 @@ def convex_polygon_point_distance(polygon, point):
         convex_polygon_point_nearest_point(polygon, point)
     )
 
+
+def convex_polygons_nearest_point(polygons, point):
+    nearest_points = [
+        convex_polygon_point_nearest_point(polygon, point)
+        for polygon in polygons
+    ]
+    return min(
+        nearest_points,
+        key=lambda np: distance(np, point))
+
+
+def convex_polygons_point_distance(polygons, point):
+    return distance(
+        convex_polygons_nearest_point(polygons, point),
+        point
+    )
