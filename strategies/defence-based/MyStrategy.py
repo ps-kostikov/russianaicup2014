@@ -79,37 +79,15 @@ class MyStrategy:
                 env.move.action = ActionType.SWING
             return
 
-        def count_target_polygons(env):
-            res = []
-            for p in self.target_polygons:
-                my_dist = geometry.convex_polygon_point_distance(p, env.me)
-                counted_opp_hs = []
-                rad = (env.game.rink_bottom - env.game.rink_top) / 2.
-                opp_net_center = shortcuts.net_front_center(env, shortcuts.opponent_player(env))
-                for oh in shortcuts.opponent_field_hockeyists(env):
-                    if geometry.distance(oh, opp_net_center) > rad:
-                        counted_opp_hs.append(oh)
-
-                if not counted_opp_hs:
-                    res.append(p)
-                    continue
-
-                opp_dists = [
-                    geometry.convex_polygon_point_distance(p, h)
-                    for h in counted_opp_hs
-                ]
-                if my_dist < min(opp_dists):
-                    res.append(p)
-
-            if not res:
-                return self.target_polygons
-            return res
-
         def f(point):
-            return -assessments.ticks_to_reach_point(env, env.me, point)
+            angles = [
+                geometry.ray_ray_angle(oh, env.me, point)
+                for oh in shortcuts.opponent_field_hockeyists(env)
+            ]
+            return min(angles)
 
         strike_point = algorithm.best_point_for_polynoms(
-            count_target_polygons(env), f=f)
+            self.target_polygons, f=f)
 
         collega = filter(
             lambda h: h.id != env.me.id,
