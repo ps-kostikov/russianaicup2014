@@ -33,6 +33,94 @@ def count_weak_points(env):
     )
 
 
+def count_attack_polygon(
+    env, player, is_down, angle_min, angle_max, rink_margin, middle_margin):
+
+    is_left = shortcuts.player_left(env, player)
+    left_sign = shortcuts.player_left_sign(env, player)
+    left_sign = 1 if is_left else -1
+
+    # down_sign = 1 - нижняя половина
+    down_sign = 1 if is_down else -1.
+
+    if is_down:
+        corner_y = player.net_top
+    else:
+        corner_y = player.net_bottom
+
+    corner = geometry.Point(
+        player.net_front,
+        corner_y)
+
+    # attack_y_min - линия ближе к границе
+    # attack_y_max - линия ближе к воротам
+    if is_down:
+        attack_y_min = env.game.rink_bottom - rink_margin
+    else:
+        attack_y_min = env.game.rink_top + rink_margin
+    if is_down:
+        attack_y_max = player.net_bottom - shortcuts.goalie_radius() - middle_margin
+    else:
+        attack_y_max = player.net_top + shortcuts.goalie_radius() + middle_margin
+
+    attack_x_min = env.game.rink_left
+    attack_x_max = env.game.rink_right
+
+    angle_sign = left_sign * down_sign
+    if is_left:
+        angle_shift = 0.
+    else:
+        angle_shift = geometry.degree_to_rad(180)
+
+    p1 = geometry.ray_interval_intersection_v2(
+        corner,
+        geometry.angle_vector(angle_sign * angle_min + angle_shift, 1),
+        geometry.Point(attack_x_min, attack_y_max),
+        geometry.Point(attack_x_max, attack_y_max)
+    )
+    p2 = geometry.ray_interval_intersection_v2(
+        corner,
+        geometry.angle_vector(angle_sign * angle_min + angle_shift, 1),
+        geometry.Point(attack_x_min, attack_y_min),
+        geometry.Point(attack_x_max, attack_y_min)
+    )
+    p3 = geometry.ray_interval_intersection_v2(
+        corner,
+        geometry.angle_vector(angle_sign * angle_max + angle_shift, 1),
+        geometry.Point(attack_x_min, attack_y_min),
+        geometry.Point(attack_x_max, attack_y_min)
+    )
+    p4 = geometry.ray_interval_intersection_v2(
+        corner,
+        geometry.angle_vector(angle_sign * angle_max + angle_shift, 1),
+        geometry.Point(attack_x_min, attack_y_max),
+        geometry.Point(attack_x_max, attack_y_max)
+    )
+    return geometry.Polygon([p1, p2, p3, p4])
+
+
+def count_optimistic_attack_polygons(env, player):
+    return [
+        count_attack_polygon(env, player, is_down,
+            geometry.degree_to_rad(30), geometry.degree_to_rad(50), 0, 0)
+        for is_down in (False, True)
+    ]
+
+
+def count_target_up_attack_polygon(env, player):
+    return count_attack_polygon(
+        env, player, False,
+        geometry.degree_to_rad(35), geometry.degree_to_rad(50), 50, 150
+    )
+
+
+def count_target_down_attack_polygon(env, player):
+    return count_attack_polygon(
+        env, player, True,
+        geometry.degree_to_rad(35), geometry.degree_to_rad(50), 50, 150
+    )
+
+
 def count_attack_polygons(env, player):
     is_left = shortcuts.player_left(env, player)
     left_sign = shortcuts.player_left_sign(env, player)
@@ -108,7 +196,7 @@ def count_defence_point(env):
     im_left_sign = shortcuts.im_left_sign(env)
     my_player = shortcuts.my_player(env)
     return geometry.Point(
-        my_player.net_front + im_left_sign * env.game.goal_net_height / 2.,
+        my_player.net_front + im_left_sign * 90,
         shortcuts.field_center(env).y
     )
 

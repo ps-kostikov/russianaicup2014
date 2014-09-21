@@ -26,6 +26,13 @@ def opponent_goal_interval(env):
     return goal_interval(env, opponent_player(env))
 
 
+def net_front_center(env, player):
+    return geometry.Point(
+        player.net_front,
+        (player.net_top + player.net_bottom) / 2.
+    )
+
+
 def goalie(env, player):
     for h in env.world.hockeyists:
         if h.player_id == player.id and h.type == HockeyistType.GOALIE:
@@ -140,3 +147,8 @@ def puck_speed_abs_after_strike(env, hockeyist):
         hockeyist.speed_x * math.cos(hockeyist.angle) +
         hockeyist.speed_y * math.sin(hockeyist.angle)
     )
+
+
+def take_puck_probability(env, puck_speed):
+    return max(0, 1.6 - 0.05 * puck_speed)
+
