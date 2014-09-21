@@ -257,3 +257,17 @@ def convex_polygons_point_distance(polygons, point):
         convex_polygons_nearest_point(polygons, point),
         point
     )
+
+
+def mirror_x(point, x):
+    return Point(
+        2 * x - point.x,
+        point.y
+    )
+
+
+def mirror_y(point, y):
+    return Point(
+        point.x,
+        2 * y - point.y
+    )
