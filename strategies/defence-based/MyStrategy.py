@@ -106,9 +106,6 @@ class MyStrategy:
             return res
 
         def f(point):
-            # s = 0
-            # for oh in shortcuts.opponent_field_hockeyists(env):
-            #     s -= 1. / (geometry.distance(oh, point) ** 2)
             return -assessments.ticks_to_reach_point(env, env.me, point)
 
         strike_point = algorithm.best_point_for_polynoms(
@@ -121,30 +118,13 @@ class MyStrategy:
         if geometry.distance(collega, env.me) > 200:
             for oh in shortcuts.opponent_field_hockeyists(env):
                 if geometry.interval_point_distance(env.me, strike_point, oh) < 60:
-                    # print 'me', env.me.x, env.me.y
-                    # print 'strike_point', strike_point.x, strike_point.y
-                    # print 'oh', oh.x, oh.y
                     self.do_pass(env)
                     return
 
         experiments.fast_move_to_point(env, strike_point)
 
-    # def do_defence_actions(self, env):
-    #     nearest_to_dp = shortcuts.nearest_unit(
-    #         shortcuts.my_field_hockeyists(env), self.defence_point)
-    #     if nearest_to_dp.id == env.me.id:
-    #         self.do_protect_goal_actions(env)
-    #     else:
-    #         self.do_get_puck_actions(env)
-
     def its_dangerous(self, env):
         return any(geometry.point_in_convex_polygon(env.world.puck, p) for p in self.weak_polygons)
-        # my_player = shortcuts.my_player(env)
-        # my_goal_center = geometry.Point(
-        #     my_player.net_front,
-        #     (my_player.net_top + my_player.net_bottom) / 2.
-        # )
-        # return geometry.distance(env.world.puck, my_goal_center) < 400
 
     def do_get_puck_actions(self, env):
         if self.its_dangerous(env):
@@ -165,6 +145,11 @@ class MyStrategy:
             if shortcuts.take_puck_probability(env, puck_abs_speed) >= 1.:
                 env.move.action = ActionType.TAKE_PUCK
                 return
+
+            if not assessments.puck_is_heading_to_my_net(env):
+                env.move.action = ActionType.TAKE_PUCK
+                return
+
         if shortcuts.can_strike_unit(env, env.world.puck):
             env.move.action = ActionType.STRIKE
             return
@@ -188,6 +173,10 @@ class MyStrategy:
 
             puck_abs_speed = geometry.vector_abs(env.world.puck.speed_x, env.world.puck.speed_y)
             if shortcuts.take_puck_probability(env, puck_abs_speed) >= 0.95:
+                env.move.action = ActionType.TAKE_PUCK
+                return
+
+            if not assessments.puck_is_heading_to_my_net(env):
                 env.move.action = ActionType.TAKE_PUCK
                 return
 
