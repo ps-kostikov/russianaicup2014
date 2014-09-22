@@ -185,6 +185,17 @@ def vector_abs(*args):
         return math.hypot(x, y)
 
 
+def adjust_vector(point, length=1.):
+    norm = vector_abs(point)
+    if norm <= 0.00001:
+        return point
+
+    return Point(
+        length * point.x / norm,
+        length * point.y / norm
+    )
+
+
 def diff(point_begin, point_end):
     return Point(
         point_end.x - point_begin.x,

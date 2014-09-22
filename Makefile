@@ -15,6 +15,9 @@ local_with_local:
 	sleep 2
 	PYTHONPATH=strategies/$(PLAYER2):src:. python Runner.py 127.0.0.1 31002 0000000000000000
 
+repeat:
+	PYTHONPATH=strategies/$(PLAYER1):src:. python Runner.py
+
 test:
 	PYTHONPATH=src:. python tests/test_geometry.py
 	PYTHONPATH=src:. python tests/test_algorithm.py

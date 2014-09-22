@@ -138,7 +138,7 @@ def hockeyist_with_puck(env):
 
 
 def strike_power(env, swing_ticks):
-    env.game.strike_power_base_factor + env.game.strike_power_growth_factor * swing_ticks
+    return env.game.strike_power_base_factor + env.game.strike_power_growth_factor * swing_ticks
 
 
 def puck_speed_abs_after_strike(env, hockeyist):

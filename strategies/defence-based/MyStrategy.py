@@ -40,12 +40,12 @@ class MyStrategy:
         self.save_last_puck_owner(env)
 
         if env.me.state == HockeyistState.SWINGING:
-            if env.me.swing_ticks >= env.game.max_effective_swing_ticks:
-                env.move.action = ActionType.STRIKE
-            elif assessments.someone_can_reach_me_after_ticks(env, 2):
-                env.move.action = ActionType.STRIKE
-            else:
+            if self.swing_condition(env):
                 env.move.action = ActionType.SWING
+
+            if self.strike_condition(env):
+                env.move.action = ActionType.STRIKE
+
             return
 
         hockeyist_with_puck = shortcuts.hockeyist_with_puck(env)
@@ -69,6 +69,27 @@ class MyStrategy:
         if hockeyist_with_puck is not None:
             self.last_puck_owner_player_id = hockeyist_with_puck.player_id
 
+    def strike_condition(self, env):
+        if env.me.swing_ticks >= env.game.max_effective_swing_ticks:
+            return True
+        if assessments.someone_can_reach_me_after_ticks(env, 4) and not prediction.goalie_can_save_straight(env):
+            return True
+
+        if env.me.state == HockeyistState.SWINGING:
+            next_puck = prediction.next_puck_position(env)
+            next_me = prediction.next_hockeyist_position(env, env.me, 1)
+            # HARDCODE
+            next_me.swing_ticks = min(20, env.me.swing_ticks + 1)
+            after_strike = assessments.puck_after_strike(env, hockeyist=next_me, puck=next_puck)
+            if prediction.goalie_can_save_straight(env, puck=after_strike):
+                return True
+
+        return False
+
+    def swing_condition(self, env):
+        puck = assessments.puck_after_strike(env)
+        return not prediction.goalie_can_save_straight(env, puck=puck)
+
     def attack_with_puck(self, env):
 
         if any(geometry.point_in_convex_polygon(env.me, p) for p in self.attack_polygons):
@@ -76,7 +97,13 @@ class MyStrategy:
             basic_actions.turn_to_unit(env, goal_point)
 
             if basic_actions.turned_to_unit(env, goal_point, eps=geometry.degree_to_rad(1.0)):
+                env.move.speed_up = 1.
+
+            if self.swing_condition(env):
                 env.move.action = ActionType.SWING
+
+            if self.strike_condition(env):
+                env.move.action = ActionType.STRIKE
             return
 
         def f(point):

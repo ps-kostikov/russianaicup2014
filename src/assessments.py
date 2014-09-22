@@ -90,3 +90,25 @@ def can_goal(env, hockeyist, player):
     )
 
     return not prediction.goalie_can_save_straight(env, puck=puck_after_strike)
+
+
+def puck_after_strike(env, hockeyist=None, puck=None):
+    if hockeyist is None:
+        hockeyist = env.me
+    if puck is None:
+        puck = env.world.puck
+
+    speed_abs = shortcuts.puck_speed_abs_after_strike(env, hockeyist)
+
+    speed = geometry.adjust_vector(geometry.Point(
+        puck.x - hockeyist.x,
+        puck.y - hockeyist.y
+    ), speed_abs)
+
+    return prediction.UnitShadow(
+        puck.x,
+        puck.y,
+        speed.x,
+        speed.y,
+        angle=env.world.puck.angle
+    )
