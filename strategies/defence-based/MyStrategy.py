@@ -169,6 +169,7 @@ class MyStrategy:
         if abs(angle) <= env.game.pass_sector / 2.:
             env.move.action = ActionType.PASS
             env.move.pass_angle = angle
+            env.move.pass_power = 0.8
 
     def do_protect_goal_actions(self, env):
         if shortcuts.can_take_puck(env):
