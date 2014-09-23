@@ -92,14 +92,18 @@ class MyStrategy:
 
     def attack_with_puck(self, env):
         def f(point):
+            nfc = shortcuts.net_front_center(env, shortcuts.opponent_player(env))
             angles = [
                 min(
                     geometry.degree_to_rad(110),
                     geometry.ray_ray_angle(oh, env.me, point)
                 )
                 for oh in shortcuts.opponent_field_hockeyists(env)
+                if geometry.distance(oh, nfc) > 300
             ]
             ticks_to_reach_point = assessments.ticks_to_reach_point(env, env.me, point)
+            if not angles:
+                return -ticks_to_reach_point
             return geometry.rad_to_degree(min(angles)) - ticks_to_reach_point / 100
 
         strike_point = algorithm.best_point_for_polynoms(
