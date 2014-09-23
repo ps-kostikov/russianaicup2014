@@ -71,6 +71,20 @@ def someone_can_reach_me_after_ticks(env, ticks):
                 return True
     return False
 
+
+def someone_can_reach_me_after_ticks_rough(env, ticks):
+    opponent_hockeyists = shortcuts.opponent_field_hockeyists(env)
+    for h in opponent_hockeyists:
+        for t in range(ticks + 1):
+            if h.remaining_cooldown_ticks - t > 0:
+                continue
+            future_h = prediction.next_hockeyist_position(env, h, t)
+            if geometry.distance(future_h, env.me) <= env.game.stick_length:
+                return True
+            if geometry.distance(future_h, env.world.puck) <= env.game.stick_length:
+                return True
+    return False
+
 # 1dim model
 def _count_ricochet(minx, maxx, x):
     while x > maxx or x < minx:
