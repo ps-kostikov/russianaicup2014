@@ -101,11 +101,14 @@ class MyStrategy:
         )[0]
         if geometry.distance(collega, env.me) > 200:
             for oh in shortcuts.opponent_field_hockeyists(env):
+                # if abs(geometry.ray_ray_angle(strike_point, env.me, oh)) < geometry.degree_to_rad(60):
+
                 if geometry.interval_point_distance(env.me, strike_point, oh) < 60:
                     return True
 
         if any(geometry.point_in_convex_polygon(env.me, p) for p in self.dead_polygons):
             return True
+
         return False
 
     def attack_with_puck(self, env):
@@ -178,6 +181,10 @@ class MyStrategy:
                 return
 
         if shortcuts.can_strike_unit(env, env.world.puck):
+            env.move.action = ActionType.STRIKE
+            return
+
+        if hwp is not None and shortcuts.can_strike_unit(env, hwp):
             env.move.action = ActionType.STRIKE
             return
 
