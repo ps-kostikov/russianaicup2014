@@ -73,11 +73,6 @@ class MyStrategy:
     def strike_condition(self, env):
         if env.me.swing_ticks >= env.game.max_effective_swing_ticks:
             return True
-        if assessments.someone_can_reach_me_after_ticks_rough(env, 2):
-            next_puck = assessments.puck_after_strike(env, hockeyist=env.me)
-            goal_point = experiments.get_goal_point(env)
-            if basic_actions.turned_to_unit(env, goal_point):
-                return True
 
         if env.me.state == HockeyistState.SWINGING:
             next_puck = prediction.next_puck_position(env)
