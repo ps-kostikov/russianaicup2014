@@ -4,6 +4,8 @@ import prediction
 import geometry
 import shortcuts
 
+import math
+
 
 def _count_player_weak_points(env, player):
     is_left = 1. if player.net_back < shortcuts.rink_center(env).x else -1.
@@ -103,6 +105,14 @@ def count_optimistic_attack_polygons(env, player):
     return [
         count_attack_polygon(env, player, is_down,
             geometry.degree_to_rad(30), geometry.degree_to_rad(50), 0, 0)
+        for is_down in (False, True)
+    ]
+
+
+def count_cautious_attack_polygons(env, player):
+    return [
+        count_attack_polygon(env, player, is_down,
+            geometry.degree_to_rad(27), geometry.degree_to_rad(55), 0, -100)
         for is_down in (False, True)
     ]
 
@@ -278,6 +288,19 @@ def fast_move_to_point_backward(env, point):
         env.move.speed_up = -1.0
 
 
+def do_stop(env):
+    speed_abs = geometry.vector_abs(env.me.speed_x, env.me.speed_y)
+    angle = geometry.get_angle(
+        math.cos(env.me.angle), math.sin(env.me.angle),
+        env.me.speed_x, env.me.speed_y)
+    if abs(geometry.rad_to_degree(angle)) < 90:
+        env.move.turn = angle
+        env.move.speed_up = -min(1., speed_abs / env.game.hockeyist_speed_down_factor)
+    else:
+        env.move.turn = -angle
+        env.move.speed_up = min(1., speed_abs / env.game.hockeyist_speed_up_factor)
+
+
 def get_goal_point(env, puck=None):
     opponent_player = env.world.get_opponent_player()
     goal_x = 0.5 * (opponent_player.net_back + opponent_player.net_front)
@@ -286,3 +309,4 @@ def get_goal_point(env, puck=None):
         puck = env.world.puck
     goal_y += (0.5 if puck.y < goal_y else -0.5) * env.game.goal_net_height
     return geometry.Point(goal_x, goal_y)
+

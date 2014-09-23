@@ -26,6 +26,22 @@ def puck_is_heading_to_my_net(env):
     )
     if intersection is None:
         return False
+
+    angle = geometry.ray_ray_angle(
+        env.world.puck,
+        intersection,
+        geometry.Point(
+            player.net_front,
+            env.game.rink_top
+        ))
+
+    if abs(geometry.degree_to_rad(90) - angle) < geometry.degree_to_rad(20):
+        return False
+
+    if intersection.y < player.net_top:
+        return (player.net_top - intersection.y) < 10
+    if intersection.y > player.net_bottom:
+        return (intersection.y - player.net_bottom) < 10
     return abs(intersection.y - player.net_top) < 50 or abs(intersection.y - player.net_bottom) < 50
 
 

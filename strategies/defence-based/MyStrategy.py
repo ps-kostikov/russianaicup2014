@@ -32,7 +32,7 @@ class MyStrategy:
                 experiments.count_target_down_attack_polygon(env, op),
             ]
             self.defence_point = experiments.count_defence_point(env)
-            self.weak_polygons = experiments.count_optimistic_attack_polygons(
+            self.weak_polygons = experiments.count_cautious_attack_polygons(
                 env, mp)
 
             self.last_puck_owner_player_id = None
@@ -142,9 +142,6 @@ class MyStrategy:
         env.move.speed_up = 1.0
         env.move.turn = env.me.get_angle_to_unit(env.world.puck)
         if shortcuts.can_take_puck(env):
-            if self.last_puck_owner_player_id == env.me.player_id:
-                env.move.action = ActionType.TAKE_PUCK
-                return
 
             puck_abs_speed = geometry.vector_abs(env.world.puck.speed_x, env.world.puck.speed_y)
             if shortcuts.take_puck_probability(env, puck_abs_speed) >= 1.:
@@ -171,14 +168,13 @@ class MyStrategy:
             env.move.pass_angle = angle
             env.move.pass_power = 0.8
 
+    def leave_goal_condition(self, env):
+        return geometry.distance(self.defence_point, env.world.puck) <= 200
+
     def do_protect_goal_actions(self, env):
         if shortcuts.can_take_puck(env):
-            if self.last_puck_owner_player_id == env.me.player_id:
-                env.move.action = ActionType.TAKE_PUCK
-                return
-
             puck_abs_speed = geometry.vector_abs(env.world.puck.speed_x, env.world.puck.speed_y)
-            if shortcuts.take_puck_probability(env, puck_abs_speed) >= 0.95:
+            if shortcuts.take_puck_probability(env, puck_abs_speed) >= 1.:
                 env.move.action = ActionType.TAKE_PUCK
                 return
 
@@ -190,15 +186,23 @@ class MyStrategy:
             env.move.action = ActionType.STRIKE
             return
 
-        if self.its_dangerous(env):
-            basic_actions.turn_to_unit(env, env.world.puck)
-            if basic_actions.turned_to_unit(env, env.world.puck):
-                env.move.speed_up = 1.
+        for oh in shortcuts.opponent_field_hockeyists(env):
+            if shortcuts.can_strike_unit(env, oh):
+                env.move.action = ActionType.STRIKE
+                return
 
-        if env.me.get_distance_to_unit(self.defence_point) >= 10:
-            experiments.fast_move_to_point(env, self.defence_point)
+        if self.its_dangerous(env) and env.me.get_distance_to_unit(self.defence_point) < 100:
+            basic_actions.turn_to_unit(env, env.world.puck)
+            if self.leave_goal_condition(env):
+                if basic_actions.turned_to_unit(env, env.world.puck):
+                    env.move.speed_up = 1.
+            return
 
         speed_abs = geometry.vector_abs(env.me.speed_x, env.me.speed_y)
-        if speed_abs < 0.2:
+        if env.me.get_distance_to_unit(self.defence_point) >= 20:
+            experiments.fast_move_to_point(env, self.defence_point)
+        elif speed_abs > 0.01:
+            experiments.do_stop(env)
+        else:
             basic_actions.turn_to_unit(env, env.world.puck)
 
