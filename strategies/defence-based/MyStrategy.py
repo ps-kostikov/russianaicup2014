@@ -34,6 +34,7 @@ class MyStrategy:
             self.defence_point = experiments.count_defence_point(env)
             self.weak_polygons = experiments.count_cautious_attack_polygons(
                 env, mp)
+            self.dead_polygons = experiments.count_dead_polygons(env, op)
 
             self.last_puck_owner_player_id = None
 
@@ -93,6 +94,20 @@ class MyStrategy:
         puck = assessments.puck_after_strike(env)
         return not prediction.goalie_can_save_straight(env, puck=puck)
 
+    def pass_condition(self, env, strike_point):
+        collega = filter(
+            lambda h: h.id != env.me.id,
+            shortcuts.my_field_hockeyists(env)
+        )[0]
+        if geometry.distance(collega, env.me) > 200:
+            for oh in shortcuts.opponent_field_hockeyists(env):
+                if geometry.interval_point_distance(env.me, strike_point, oh) < 60:
+                    return True
+
+        if any(geometry.point_in_convex_polygon(env.me, p) for p in self.dead_polygons):
+            return True
+        return False
+
     def attack_with_puck(self, env):
         def f(point):
             nfc = shortcuts.net_front_center(env, shortcuts.opponent_player(env))
@@ -112,11 +127,6 @@ class MyStrategy:
         strike_point = algorithm.best_point_for_polynoms(
             self.target_polygons, f=f)
 
-        collega = filter(
-            lambda h: h.id != env.me.id,
-            shortcuts.my_field_hockeyists(env)
-        )[0]
-
         if any(geometry.point_in_convex_polygon(env.me, p) for p in self.attack_polygons):
             goal_point = experiments.get_goal_point(env)
             basic_actions.turn_to_unit(env, goal_point)
@@ -131,11 +141,9 @@ class MyStrategy:
                 env.move.action = ActionType.STRIKE
             return
 
-        if geometry.distance(collega, env.me) > 200:
-            for oh in shortcuts.opponent_field_hockeyists(env):
-                if geometry.interval_point_distance(env.me, strike_point, oh) < 60:
-                    self.do_pass(env)
-                    return
+        if self.pass_condition(env, strike_point):
+            self.do_pass(env)
+            return
 
         experiments.fast_move_to_point(env, strike_point)
 

@@ -117,6 +117,14 @@ def count_cautious_attack_polygons(env, player):
     ]
 
 
+def count_dead_polygons(env, player):
+    return [
+        count_attack_polygon(env, player, is_down,
+            geometry.degree_to_rad(65), geometry.degree_to_rad(90), 0, 0)
+        for is_down in (False, True)
+    ]
+
+
 def count_target_up_attack_polygon(env, player):
     return count_attack_polygon(
         env, player, False,
