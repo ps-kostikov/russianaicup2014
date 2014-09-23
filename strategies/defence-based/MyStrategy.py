@@ -91,6 +91,24 @@ class MyStrategy:
         return not prediction.goalie_can_save_straight(env, puck=puck)
 
     def attack_with_puck(self, env):
+        def f(point):
+            angles = [
+                min(
+                    geometry.degree_to_rad(110),
+                    geometry.ray_ray_angle(oh, env.me, point)
+                )
+                for oh in shortcuts.opponent_field_hockeyists(env)
+            ]
+            ticks_to_reach_point = assessments.ticks_to_reach_point(env, env.me, point)
+            return geometry.rad_to_degree(min(angles)) - ticks_to_reach_point / 100
+
+        strike_point = algorithm.best_point_for_polynoms(
+            self.target_polygons, f=f)
+
+        collega = filter(
+            lambda h: h.id != env.me.id,
+            shortcuts.my_field_hockeyists(env)
+        )[0]
 
         if any(geometry.point_in_convex_polygon(env.me, p) for p in self.attack_polygons):
             goal_point = experiments.get_goal_point(env)
@@ -106,20 +124,6 @@ class MyStrategy:
                 env.move.action = ActionType.STRIKE
             return
 
-        def f(point):
-            angles = [
-                geometry.ray_ray_angle(oh, env.me, point)
-                for oh in shortcuts.opponent_field_hockeyists(env)
-            ]
-            return min(angles)
-
-        strike_point = algorithm.best_point_for_polynoms(
-            self.target_polygons, f=f)
-
-        collega = filter(
-            lambda h: h.id != env.me.id,
-            shortcuts.my_field_hockeyists(env)
-        )[0]
         if geometry.distance(collega, env.me) > 200:
             for oh in shortcuts.opponent_field_hockeyists(env):
                 if geometry.interval_point_distance(env.me, strike_point, oh) < 60:
