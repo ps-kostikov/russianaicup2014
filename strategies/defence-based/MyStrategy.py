@@ -160,7 +160,12 @@ class MyStrategy:
                     return
 
         env.move.speed_up = 1.0
-        env.move.turn = env.me.get_angle_to_unit(env.world.puck)
+        hwp = shortcuts.hockeyist_with_puck(env)
+        if hwp is not None:
+            basic_actions.turn_to_unit(env, hwp)
+        else:
+            basic_actions.turn_to_unit(env, env.world.puck)
+
         if shortcuts.can_take_puck(env):
 
             puck_abs_speed = geometry.vector_abs(env.world.puck.speed_x, env.world.puck.speed_y)
