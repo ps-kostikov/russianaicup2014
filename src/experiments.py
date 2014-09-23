@@ -112,7 +112,7 @@ def count_optimistic_attack_polygons(env, player):
 def count_cautious_attack_polygons(env, player):
     return [
         count_attack_polygon(env, player, is_down,
-            geometry.degree_to_rad(27), geometry.degree_to_rad(55), 0, -100)
+            geometry.degree_to_rad(27), geometry.degree_to_rad(60), 0, -100)
         for is_down in (False, True)
     ]
 

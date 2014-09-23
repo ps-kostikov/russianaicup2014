@@ -57,7 +57,7 @@ def puck_is_heading_to_me(env):
             env.world.puck.speed_x,
             env.world.puck.speed_y
         ),
-        env.me) < 30
+        env.me) < 60
 
 
 def ticks_to_reach_point(env, hockeyist, point):

@@ -72,7 +72,7 @@ class MyStrategy:
     def strike_condition(self, env):
         if env.me.swing_ticks >= env.game.max_effective_swing_ticks:
             return True
-        if assessments.someone_can_reach_me_after_ticks_rough(env, 4):
+        if assessments.someone_can_reach_me_after_ticks_rough(env, 2):
             next_puck = assessments.puck_after_strike(env, hockeyist=env.me)
             goal_point = experiments.get_goal_point(env)
             if basic_actions.turned_to_unit(env, goal_point):
@@ -140,7 +140,8 @@ class MyStrategy:
         experiments.fast_move_to_point(env, strike_point)
 
     def its_dangerous(self, env):
-        return any(geometry.point_in_convex_polygon(env.world.puck, p) for p in self.weak_polygons)
+        return (any(geometry.point_in_convex_polygon(env.world.puck, p) for p in self.weak_polygons)
+            or geometry.distance(env.world.puck, self.defence_point) < 120)
 
     def do_get_puck_actions(self, env):
         if self.its_dangerous(env):
