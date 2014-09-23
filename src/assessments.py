@@ -45,6 +45,21 @@ def puck_is_heading_to_my_net(env):
     return abs(intersection.y - player.net_top) < 50 or abs(intersection.y - player.net_bottom) < 50
 
 
+def puck_is_heading_to_me(env):
+    if shortcuts.hockeyist_with_puck(env) is not None:
+        return False
+    speed_abs = geometry.vector_abs(env.world.puck.speed_x, env.world.puck.speed_y)
+    if speed_abs < 10:
+        return False
+    return geometry.ray_point_distance(
+        env.world.puck,
+        geometry.Point(
+            env.world.puck.speed_x,
+            env.world.puck.speed_y
+        ),
+        env.me) < 30
+
+
 def ticks_to_reach_point(env, hockeyist, point):
     distance = geometry.distance(hockeyist, point)
     if distance < 0.01:

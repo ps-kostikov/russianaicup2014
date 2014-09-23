@@ -209,6 +209,10 @@ class MyStrategy:
                     env.move.speed_up = 1.
             return
 
+        if assessments.puck_is_heading_to_me(env):
+            basic_actions.turn_to_unit(env, env.world.puck)
+            return
+
         speed_abs = geometry.vector_abs(env.me.speed_x, env.me.speed_y)
         if env.me.get_distance_to_unit(self.defence_point) >= 20:
             experiments.fast_move_to_point(env, self.defence_point)
