@@ -16,6 +16,12 @@ import algorithm
 import prediction
 
 
+def unit_in_sector(hockeyist, unit, max_distance, half_sector):
+    angle = hockeyist.get_angle_to_unit(unit)
+    distance = hockeyist.get_distance_to_unit(unit)
+    return distance <= max_distance and abs(angle) <= half_sector
+
+
 class MyStrategy:
 
     def move(self, me, world, game, move):
@@ -39,6 +45,7 @@ class MyStrategy:
             self.last_puck_owner_player_id = None
 
         self.save_last_puck_owner(env)
+        self.save_start_game_tick(env)
 
         if env.me.state == HockeyistState.SWINGING:
             if self.swing_condition(env):
@@ -70,6 +77,15 @@ class MyStrategy:
         if hockeyist_with_puck is not None:
             self.last_puck_owner_player_id = hockeyist_with_puck.player_id
 
+    def save_start_game_tick(self, env):
+        puck = env.world.puck
+        if geometry.distance(puck, shortcuts.rink_center(env)) > 0.1:
+            return
+        puck_abs_speed = geometry.vector_abs(puck.speed_x, puck.speed_y)
+        if puck_abs_speed > 0.1:
+            return
+        self.game_start_tick = env.world.tick
+
     def strike_condition(self, env):
         if env.me.swing_ticks >= env.game.max_effective_swing_ticks:
             return True
@@ -85,18 +101,38 @@ class MyStrategy:
 
         return False
 
+    def can_run(self, env):
+        if abs(env.world.puck.y - shortcuts.rink_center(env).y) < 130:
+            return False
+        for oh in shortcuts.opponent_field_hockeyists(env):
+            if geometry.distance(env.me, oh) < 150:
+                return False
+        return True
+
     def swing_condition(self, env):
+        if self.can_run(env):
+            return False
         puck = assessments.puck_after_strike(env)
         return not prediction.goalie_can_save_straight(env, puck=puck)
 
     def pass_condition(self, env, strike_point):
+        if env.world.tick - self.game_start_tick <= 75:
+            return True
+
         collega = filter(
             lambda h: h.id != env.me.id,
             shortcuts.my_field_hockeyists(env)
         )[0]
+        net_center = shortcuts.net_front_center(env, shortcuts.opponent_player(env))
         if geometry.distance(collega, env.me) > 200:
             for oh in shortcuts.opponent_field_hockeyists(env):
-                # if abs(geometry.ray_ray_angle(strike_point, env.me, oh)) < geometry.degree_to_rad(60):
+                # my_angle = geometry.ray_ray_angle(env.me, strike_point, net_center)
+                # o_angle = geometry.ray_ray_angle(oh, strike_point, net_center)
+                # my_distance = geometry.distance(env.me, strike_point)
+                # o_distance = geometry.distance(oh, strike_point)
+
+                # if my_angle > o_angle and my_distance > o_distance:
+                #     return True
 
                 if geometry.interval_point_distance(env.me, strike_point, oh) < 60:
                     return True
@@ -143,7 +179,7 @@ class MyStrategy:
             self.do_pass(env)
             return
 
-        experiments.fast_move_to_point(env, strike_point)
+        experiments.fast_move_to_point_forward(env, strike_point)
 
     def its_dangerous(self, env):
         return (any(geometry.point_in_convex_polygon(env.world.puck, p) for p in self.weak_polygons)
