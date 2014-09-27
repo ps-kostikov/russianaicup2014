@@ -18,6 +18,9 @@ local_with_local:
 repeat:
 	PYTHONPATH=strategies/$(PLAYER1):src:. python Runner.py
 
+plugins:
+	javac -encoding UTF-8 plugins/*.java -cp plugins
+
 test:
 	PYTHONPATH=src:. python tests/test_geometry.py
 	PYTHONPATH=src:. python tests/test_algorithm.py
@@ -26,3 +29,5 @@ clean:
 	find -name \*.pyc -exec rm {} \;
 	rm -f strategy.zip
 	rm -f result.txt
+
+.PHONY: plugins
