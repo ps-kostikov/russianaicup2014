@@ -45,7 +45,7 @@ def puck_is_heading_to_my_net(env):
     return abs(intersection.y - player.net_top) < 50 or abs(intersection.y - player.net_bottom) < 50
 
 
-def puck_is_heading_to_me(env):
+def puck_is_heading_to_unit(env, unit):
     if shortcuts.hockeyist_with_puck(env) is not None:
         return False
     speed_abs = geometry.vector_abs(env.world.puck.speed_x, env.world.puck.speed_y)
@@ -57,7 +57,11 @@ def puck_is_heading_to_me(env):
             env.world.puck.speed_x,
             env.world.puck.speed_y
         ),
-        env.me) < 60
+        unit) < 60
+
+
+def puck_is_heading_to_me(env):
+    return puck_is_heading_to_unit(env, env.me)
 
 
 def ticks_to_reach_point(env, hockeyist, point):
@@ -86,19 +90,6 @@ def someone_can_reach_me_after_ticks(env, ticks):
                 return True
     return False
 
-
-def someone_can_reach_me_after_ticks_rough(env, ticks):
-    opponent_hockeyists = shortcuts.opponent_field_hockeyists(env)
-    for h in opponent_hockeyists:
-        for t in range(ticks + 1):
-            if h.remaining_cooldown_ticks - t > 0:
-                continue
-            future_h = prediction.next_hockeyist_position(env, h, t)
-            if geometry.distance(future_h, env.me) <= env.game.stick_length:
-                return True
-            if geometry.distance(future_h, env.world.puck) <= env.game.stick_length:
-                return True
-    return False
 
 # 1dim model
 def _count_ricochet(minx, maxx, x):

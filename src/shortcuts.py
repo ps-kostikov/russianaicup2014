@@ -152,3 +152,13 @@ def puck_speed_abs_after_strike(env, hockeyist):
 def take_puck_probability(env, puck_speed):
     return max(0, 1.6 - 0.05 * puck_speed)
 
+
+def team_size(env):
+    return max(h.teammate_index for h in env.world.hockeyists)
+
+
+def my_hockeyist_by_index(env, index):
+    for h in env.world.hockeyists:
+        if h.teammate and h.teammate_index == index:
+            return h
+    return None
