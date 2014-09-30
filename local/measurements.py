@@ -1,18 +1,30 @@
 import geometry
 import prediction
 import shortcuts
-import experiments
+
+
+def get_goal_point(env, puck):
+    opponent_player = env.world.get_opponent_player()
+    if opponent_player.net_back > shortcuts.rink_center(env).x:
+        goal_x = opponent_player.net_front + 20
+    else:
+        goal_x = opponent_player.net_front - 20
+    if puck.y < shortcuts.rink_center(env):
+        goal_y = opponent_player.net_bottom
+    else:
+        goal_y = opponent_player.net_top
+    return geometry.Point(goal_x, goal_y)
 
 
 def make_puck(env, x, y, speed_x=None, speed_y=None):
-    goal_point = experiments.get_goal_point(env, puck=geometry.Point(x, y))
+    goal_point = get_goal_point(env, puck=geometry.Point(x, y))
     if speed_x is None:
         speed_x = goal_point.x - x
         speed_y = goal_point.y - y
         norm = geometry.vector_abs(speed_x, speed_y)
-        speed_x = speed_x * 17. / norm
-        speed_y = speed_y * 17. / norm
-    return prediction.UnitShadow(x, y, speed_x, speed_y)
+        speed_x = speed_x * 15. / norm
+        speed_y = speed_y * 15. / norm
+    return prediction.UnitShadow(x, y, speed_x, speed_y, 0)
 
 
 def goalie_by_puck(env, puck):
@@ -24,7 +36,7 @@ def goalie_by_puck(env, puck):
     goalie_x = shortcuts.opponent_goalie(env).x
     goalie_y = max(min(max_goalie_y, puck.y), min_goalie_y)
 
-    return prediction.UnitShadow(goalie_x, goalie_y, 0, 0)
+    return prediction.UnitShadow(goalie_x, goalie_y, 0, 0, 0)
 
 
 def count_chances(env):
@@ -36,8 +48,9 @@ def count_chances(env):
     miss_in_area = 0
     miss_not_in_area = 0
 
-    polygon = experiments.count_puck_attack_area(env, shortcuts.opponent_player(env))
+    # polygon = experiments.count_puck_attack_area(env, shortcuts.opponent_player(env))
 
+    res_str = ''
     for x in range(int(env.game.rink_left + radius), int(env.game.rink_right - radius), 5):
         for y in range(int(env.game.rink_top + radius), int(env.game.rink_bottom - radius), 5):
 
@@ -49,12 +62,14 @@ def count_chances(env):
             hit = not prediction.goalie_can_save_straight(
                 env, puck=puck, goalie=goalie)
 
-            in_area = geometry.point_in_convex_polygon(
-                geometry.Point(x, y), polygon)
+            # in_area = geometry.point_in_convex_polygon(
+            #     geometry.Point(x, y), polygon)
+            in_area = True
 
             total += 1
             if hit:
                 hits += 1
+                res_str += 'point {0} {1}\n'.format(x, y)
             if hit and in_area:
                 hits_in_area += 1
             if hit and not in_area:
@@ -70,6 +85,8 @@ def count_chances(env):
     print 'hits_not_in_area', hits_not_in_area
     print 'miss_in_area', miss_in_area
     print 'miss_not_in_area', miss_not_in_area
+    with open('draw_area', 'w') as i:
+        i.write(res_str)
 
 
 def can_hit(env, x, y):
