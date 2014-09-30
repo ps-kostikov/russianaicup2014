@@ -7,6 +7,14 @@ local_with_quick:
 	sleep 2
 	PYTHONPATH=strategies/$(PLAYER1):src:. python Runner.py
 
+local_with_local2:
+	SCRIPTDIR=`pwd`
+	java -cp ".:*:$$SCRIPTDIR/*" -jar "local-runner.jar" properties/render_local_local2.properties &
+	sleep 2
+	PYTHONPATH=strategies/$(PLAYER1):src:. python Runner.py 127.0.0.1 31001 0000000000000000 &
+	sleep 2
+	PYTHONPATH=strategies/$(PLAYER2):src:. python Runner.py 127.0.0.1 31002 0000000000000000
+
 local_with_local:
 	SCRIPTDIR=`pwd`
 	java -cp ".:*:$$SCRIPTDIR/*" -jar "local-runner.jar" properties/render_local_local.properties &
