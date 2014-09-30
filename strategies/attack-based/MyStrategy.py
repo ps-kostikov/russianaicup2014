@@ -16,6 +16,27 @@ import assessments
 import algorithm
 
 
+def _count_player_weak_points(env, player):
+    is_left = 1. if player.net_back < shortcuts.rink_center(env).x else -1.
+    return [
+        geometry.Point(
+            player.net_front + is_left * env.game.goal_net_height * 1.5,
+            env.game.goal_net_top - 50
+        ),
+        geometry.Point(
+            player.net_front + is_left * env.game.goal_net_height * 1.5,
+            env.game.goal_net_top + env.game.goal_net_height + 50
+        )
+    ]
+
+
+def count_weak_points(env):
+    return _count_player_weak_points(
+        env,
+        shortcuts.my_player(env)
+    )
+
+
 class MyStrategy:
 
     def move(self, me, world, game, move):
@@ -26,7 +47,7 @@ class MyStrategy:
             self.attack_polygons = experiments.count_attack_polygons(
                 env,
                 shortcuts.opponent_player(env))
-            self.weak_points = experiments.count_weak_points(env)
+            self.weak_points = count_weak_points(env)
 
         if env.me.state == HockeyistState.SWINGING:
             if env.me.swing_ticks >= env.game.max_effective_swing_ticks:

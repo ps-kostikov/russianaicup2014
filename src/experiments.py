@@ -7,34 +7,6 @@ import shortcuts
 import math
 
 
-def _count_player_weak_points(env, player):
-    is_left = 1. if player.net_back < shortcuts.rink_center(env).x else -1.
-    return [
-        geometry.Point(
-            player.net_front + is_left * env.game.goal_net_height * 1.5,
-            env.game.goal_net_top - 50
-        ),
-        geometry.Point(
-            player.net_front + is_left * env.game.goal_net_height * 1.5,
-            env.game.goal_net_top + env.game.goal_net_height + 50
-        )
-    ]
-
-
-def count_strike_points(env):
-    return _count_player_weak_points(
-        env,
-        shortcuts.opponent_player(env)
-    )
-
-
-def count_weak_points(env):
-    return _count_player_weak_points(
-        env,
-        shortcuts.my_player(env)
-    )
-
-
 def count_attack_polygon(
     env, player, is_down, angle_min, angle_max, rink_margin, middle_margin):
 
