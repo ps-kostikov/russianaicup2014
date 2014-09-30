@@ -48,12 +48,24 @@ class MyStrategy:
         else:
             self.attack_mode(env)
 
+    def count_defenceman(self, env):
+        return min(
+            shortcuts.my_field_hockeyists(env),
+            key=lambda h: h.dexterity
+        )
+
     def attack_mode(self, env):
         hwp = shortcuts.hockeyist_with_puck(env)
-        if hwp.id == env.me.id:
+        defenceman = self.count_defenceman(env)
+        if env.me.id == defenceman.id:
+            if env.me.id == hwp.id:
+                self.do_pass(env)
+            else:
+                self.do_protect_goal_actions(env)
+        elif hwp.id == env.me.id:
             self.attack_with_puck(env)
         else:
-            self.do_protect_goal_actions(env)
+            self.attack_without_puck(env)
 
     def defence_mode(self, env):
         my_nearest_hockeyist = min(
@@ -118,25 +130,24 @@ class MyStrategy:
         puck = assessments.puck_after_strike(env)
         return not prediction.goalie_can_save_straight(env, puck=puck)
 
+    def find_collega_for_pass(self, env):
+        def f(h):
+            return min(
+                geometry.distance(h, oh)
+                for oh in shortcuts.opponent_field_hockeyists(env)
+            )
+        return max(
+            shortcuts.my_field_hockeyists(env),
+            key=lambda h: f(h)
+        )
+
     def pass_condition(self, env, strike_point):
         if env.world.tick - self.game_start_tick <= 75:
             return True
 
-        collega = filter(
-            lambda h: h.id != env.me.id,
-            shortcuts.my_field_hockeyists(env)
-        )[0]
-        net_center = shortcuts.net_front_center(env, shortcuts.opponent_player(env))
+        collega = self.find_collega_for_pass(env)
         if geometry.distance(collega, env.me) > 200:
             for oh in shortcuts.opponent_field_hockeyists(env):
-                # my_angle = geometry.ray_ray_angle(env.me, strike_point, net_center)
-                # o_angle = geometry.ray_ray_angle(oh, strike_point, net_center)
-                # my_distance = geometry.distance(env.me, strike_point)
-                # o_distance = geometry.distance(oh, strike_point)
-
-                # if my_angle > o_angle and my_distance > o_distance:
-                #     return True
-
                 if geometry.interval_point_distance(env.me, strike_point, oh) < 60:
                     return True
 
@@ -191,6 +202,12 @@ class MyStrategy:
 
         experiments.fast_move_to_point_forward(env, strike_point)
 
+    def attack_without_puck(self, env):
+        strike_point = self.count_strike_point(env)
+        strike_point = geometry.mirror_x(strike_point, shortcuts.rink_center(env).x)
+        strike_point = geometry.mirror_y(strike_point, shortcuts.rink_center(env).y)
+        experiments.fast_move_to_point_forward(env, strike_point)
+
     def its_dangerous(self, env):
         return (any(geometry.point_in_convex_polygon(env.world.puck, p) for p in self.weak_polygons)
             or geometry.distance(env.world.puck, self.defence_point) < 120)
@@ -230,19 +247,13 @@ class MyStrategy:
             return
 
     def do_pass(self, env):
-        collega = filter(
-            lambda h: h.id != env.me.id,
-            shortcuts.my_field_hockeyists(env)
-        )[0]
+        collega = self.find_collega_for_pass(env)
         angle = env.me.get_angle_to_unit(collega)
         env.move.turn = angle
         if abs(angle) <= env.game.pass_sector / 2.:
             env.move.action = ActionType.PASS
             env.move.pass_angle = angle
             env.move.pass_power = 0.8
-
-    def leave_goal_condition(self, env):
-        return geometry.distance(self.defence_point, env.world.puck) <= 200
 
     def do_protect_goal_actions(self, env):
         if shortcuts.can_take_puck(env):
@@ -266,7 +277,7 @@ class MyStrategy:
 
         if self.its_dangerous(env) and env.me.get_distance_to_unit(self.defence_point) < 100:
             basic_actions.turn_to_unit(env, env.world.puck)
-            if self.leave_goal_condition(env):
+            if geometry.distance(self.defence_point, env.world.puck) <= 200:
                 if basic_actions.turned_to_unit(env, env.world.puck):
                     env.move.speed_up = 1.
             return
