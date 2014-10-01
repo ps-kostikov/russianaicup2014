@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import math
+import copy
 
 import shortcuts
 import geometry
 import algorithm
+import environment
 
 
 class UnitShadow:
@@ -167,3 +169,53 @@ def goalie_can_save_straight(env, puck=None, player=None, goalie=None):
         old_goalie = next_goalie
 
     return True
+
+
+def copy_env(env):
+    n_world = copy.copy(env.world)
+    n_world.puck = copy.copy(env.world.puck)
+    n_world.hockeyists = [
+        copy.copy(h)
+        for h in env.world.hockeyists
+    ]
+    n_me = copy.copy(env.me)
+    return environment.Environment(n_me, n_world, env.game, env.move)
+
+
+def count_free_motion_next_tick(env):
+    new_env = copy_env(env)
+
+    def update_puck(new_puck, puck):
+        new_puck.x = count_xn(puck.x, puck.speed_x, 0, 1, k=puck_friction_factor())
+        new_puck.y = count_xn(puck.y, puck.speed_y, 0, 1, k=puck_friction_factor())
+        new_puck.speed_x = count_vn(puck.speed_x, 0, 1, k=puck_friction_factor())
+        new_puck.speed_y = count_vn(puck.speed_y, 0, 1, k=puck_friction_factor())
+
+    def update_hockeyist(new_h, h):
+        new_h.x = count_xn(h.x, h.speed_x, 0, 1, k=friction_factor())
+        new_h.y = count_xn(h.y, h.speed_y, 0, 1, k=friction_factor())
+        new_h.speed_x = count_vn(h.speed_x, 0, 1, k=friction_factor())
+        new_h.speed_y = count_vn(h.speed_y, 0, 1, k=friction_factor())
+
+    update_puck(new_env.world.puck, env.world.puck)
+
+    for h in shortcuts.my_field_hockeyists(env) + shortcuts.opponent_field_hockeyists(env):
+        new_h = filter(
+            lambda nh: nh.id == h.id,
+            new_env.world.hockeyists
+        )[0]
+        update_hockeyist(new_h, h)
+    return new_env
+
+
+def count_free_motion(env, tick_number):
+    '''
+    Возвращает {tick: env}
+    '''
+    res = {}
+    old_env = env
+    for tick in range(1, tick_number + 1):
+        new_env = count_free_motion_next_tick(old_env)
+        res[tick] = new_env
+        old_env = new_env
+    return res
