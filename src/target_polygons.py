@@ -1685,3 +1685,1743 @@ down_right_pols = {
 
 }
 
+
+optimistic_up_right_pols = {
+
+    15.5: geometry.Polygon([
+
+        geometry.Point(565.0, 150.0),
+
+        geometry.Point(575.0, 160.0),
+
+        geometry.Point(680.0, 240.0),
+
+        geometry.Point(740.0, 285.0),
+
+        geometry.Point(885.0, 390.0),
+
+        geometry.Point(930.0, 405.0),
+
+        geometry.Point(965.0, 415.0),
+
+        geometry.Point(1015.0, 415.0),
+
+        geometry.Point(1025.0, 410.0),
+
+        geometry.Point(1035.0, 400.0),
+
+        geometry.Point(1035.0, 390.0),
+
+        geometry.Point(1015.0, 350.0),
+
+        geometry.Point(945.0, 230.0),
+
+        geometry.Point(905.0, 165.0),
+
+        geometry.Point(895.0, 150.0),
+
+        geometry.Point(565.0, 150.0),
+
+    ]),
+
+    17.5: geometry.Polygon([
+
+        geometry.Point(450.0, 150.0),
+
+        geometry.Point(445.0, 155.0),
+
+        geometry.Point(615.0, 260.0),
+
+        geometry.Point(730.0, 330.0),
+
+        geometry.Point(835.0, 390.0),
+
+        geometry.Point(895.0, 410.0),
+
+        geometry.Point(955.0, 425.0),
+
+        geometry.Point(980.0, 430.0),
+
+        geometry.Point(1005.0, 430.0),
+
+        geometry.Point(1020.0, 425.0),
+
+        geometry.Point(1035.0, 410.0),
+
+        geometry.Point(1040.0, 400.0),
+
+        geometry.Point(1040.0, 390.0),
+
+        geometry.Point(1025.0, 360.0),
+
+        geometry.Point(920.0, 175.0),
+
+        geometry.Point(905.0, 150.0),
+
+        geometry.Point(450.0, 150.0),
+
+    ]),
+
+    16.5: geometry.Polygon([
+
+        geometry.Point(505.0, 150.0),
+
+        geometry.Point(540.0, 180.0),
+
+        geometry.Point(660.0, 260.0),
+
+        geometry.Point(860.0, 390.0),
+
+        geometry.Point(920.0, 410.0),
+
+        geometry.Point(955.0, 420.0),
+
+        geometry.Point(980.0, 425.0),
+
+        geometry.Point(1010.0, 425.0),
+
+        geometry.Point(1020.0, 420.0),
+
+        geometry.Point(1035.0, 405.0),
+
+        geometry.Point(1040.0, 395.0),
+
+        geometry.Point(1040.0, 390.0),
+
+        geometry.Point(985.0, 290.0),
+
+        geometry.Point(935.0, 205.0),
+
+        geometry.Point(900.0, 150.0),
+
+        geometry.Point(505.0, 150.0),
+
+    ]),
+
+    15.0: geometry.Polygon([
+
+        geometry.Point(595.0, 150.0),
+
+        geometry.Point(705.0, 240.0),
+
+        geometry.Point(750.0, 275.0),
+
+        geometry.Point(900.0, 390.0),
+
+        geometry.Point(960.0, 410.0),
+
+        geometry.Point(985.0, 415.0),
+
+        geometry.Point(1010.0, 415.0),
+
+        geometry.Point(1020.0, 410.0),
+
+        geometry.Point(1035.0, 395.0),
+
+        geometry.Point(1035.0, 390.0),
+
+        geometry.Point(915.0, 185.0),
+
+        geometry.Point(900.0, 160.0),
+
+        geometry.Point(890.0, 150.0),
+
+        geometry.Point(595.0, 150.0),
+
+    ]),
+
+    16.0: geometry.Polygon([
+
+        geometry.Point(535.0, 150.0),
+
+        geometry.Point(555.0, 170.0),
+
+        geometry.Point(605.0, 205.0),
+
+        geometry.Point(770.0, 320.0),
+
+        geometry.Point(875.0, 390.0),
+
+        geometry.Point(950.0, 415.0),
+
+        geometry.Point(975.0, 420.0),
+
+        geometry.Point(1015.0, 420.0),
+
+        geometry.Point(1025.0, 415.0),
+
+        geometry.Point(1035.0, 400.0),
+
+        geometry.Point(1040.0, 390.0),
+
+        geometry.Point(935.0, 210.0),
+
+        geometry.Point(920.0, 185.0),
+
+        geometry.Point(900.0, 155.0),
+
+        geometry.Point(890.0, 150.0),
+
+        geometry.Point(535.0, 150.0),
+
+    ]),
+
+    17.0: geometry.Polygon([
+
+        geometry.Point(480.0, 150.0),
+
+        geometry.Point(480.0, 155.0),
+
+        geometry.Point(515.0, 180.0),
+
+        geometry.Point(530.0, 190.0),
+
+        geometry.Point(750.0, 330.0),
+
+        geometry.Point(850.0, 390.0),
+
+        geometry.Point(925.0, 415.0),
+
+        geometry.Point(965.0, 425.0),
+
+        geometry.Point(1015.0, 425.0),
+
+        geometry.Point(1025.0, 420.0),
+
+        geometry.Point(1030.0, 415.0),
+
+        geometry.Point(1040.0, 395.0),
+
+        geometry.Point(1040.0, 390.0),
+
+        geometry.Point(1025.0, 360.0),
+
+        geometry.Point(925.0, 185.0),
+
+        geometry.Point(905.0, 155.0),
+
+        geometry.Point(895.0, 150.0),
+
+        geometry.Point(480.0, 150.0),
+
+    ]),
+
+    18.0: geometry.Polygon([
+
+        geometry.Point(420.0, 150.0),
+
+        geometry.Point(415.0, 155.0),
+
+        geometry.Point(430.0, 165.0),
+
+        geometry.Point(610.0, 270.0),
+
+        geometry.Point(715.0, 330.0),
+
+        geometry.Point(760.0, 355.0),
+
+        geometry.Point(825.0, 390.0),
+
+        geometry.Point(885.0, 410.0),
+
+        geometry.Point(920.0, 420.0),
+
+        geometry.Point(940.0, 425.0),
+
+        geometry.Point(965.0, 430.0),
+
+        geometry.Point(1015.0, 430.0),
+
+        geometry.Point(1025.0, 425.0),
+
+        geometry.Point(1030.0, 420.0),
+
+        geometry.Point(1040.0, 400.0),
+
+        geometry.Point(1040.0, 390.0),
+
+        geometry.Point(1025.0, 360.0),
+
+        geometry.Point(990.0, 295.0),
+
+        geometry.Point(910.0, 155.0),
+
+        geometry.Point(895.0, 150.0),
+
+        geometry.Point(420.0, 150.0),
+
+    ]),
+
+    19.0: geometry.Polygon([
+
+        geometry.Point(365.0, 150.0),
+
+        geometry.Point(365.0, 155.0),
+
+        geometry.Point(395.0, 175.0),
+
+        geometry.Point(505.0, 235.0),
+
+        geometry.Point(570.0, 270.0),
+
+        geometry.Point(655.0, 315.0),
+
+        geometry.Point(750.0, 365.0),
+
+        geometry.Point(800.0, 390.0),
+
+        geometry.Point(815.0, 395.0),
+
+        geometry.Point(865.0, 410.0),
+
+        geometry.Point(900.0, 420.0),
+
+        geometry.Point(960.0, 435.0),
+
+        geometry.Point(1010.0, 435.0),
+
+        geometry.Point(1020.0, 430.0),
+
+        geometry.Point(1035.0, 415.0),
+
+        geometry.Point(1040.0, 405.0),
+
+        geometry.Point(1045.0, 390.0),
+
+        geometry.Point(990.0, 290.0),
+
+        geometry.Point(925.0, 175.0),
+
+        geometry.Point(915.0, 160.0),
+
+        geometry.Point(910.0, 155.0),
+
+        geometry.Point(900.0, 150.0),
+
+        geometry.Point(365.0, 150.0),
+
+    ]),
+
+    20.0: geometry.Polygon([
+
+        geometry.Point(300.0, 150.0),
+
+        geometry.Point(345.0, 175.0),
+
+        geometry.Point(775.0, 390.0),
+
+        geometry.Point(840.0, 410.0),
+
+        geometry.Point(895.0, 425.0),
+
+        geometry.Point(915.0, 430.0),
+
+        geometry.Point(965.0, 440.0),
+
+        geometry.Point(1005.0, 440.0),
+
+        geometry.Point(1020.0, 435.0),
+
+        geometry.Point(1035.0, 420.0),
+
+        geometry.Point(1040.0, 410.0),
+
+        geometry.Point(1045.0, 390.0),
+
+        geometry.Point(950.0, 215.0),
+
+        geometry.Point(930.0, 180.0),
+
+        geometry.Point(910.0, 150.0),
+
+        geometry.Point(300.0, 150.0),
+
+    ]),
+
+    19.5: geometry.Polygon([
+
+        geometry.Point(325.0, 150.0),
+
+        geometry.Point(370.0, 175.0),
+
+        geometry.Point(455.0, 220.0),
+
+        geometry.Point(550.0, 270.0),
+
+        geometry.Point(790.0, 390.0),
+
+        geometry.Point(820.0, 400.0),
+
+        geometry.Point(870.0, 415.0),
+
+        geometry.Point(950.0, 435.0),
+
+        geometry.Point(985.0, 440.0),
+
+        geometry.Point(1005.0, 440.0),
+
+        geometry.Point(1020.0, 435.0),
+
+        geometry.Point(1035.0, 420.0),
+
+        geometry.Point(1045.0, 390.0),
+
+        geometry.Point(980.0, 270.0),
+
+        geometry.Point(960.0, 235.0),
+
+        geometry.Point(910.0, 150.0),
+
+        geometry.Point(325.0, 150.0),
+
+    ]),
+
+    18.5: geometry.Polygon([
+
+        geometry.Point(395.0, 150.0),
+
+        geometry.Point(390.0, 155.0),
+
+        geometry.Point(420.0, 175.0),
+
+        geometry.Point(545.0, 245.0),
+
+        geometry.Point(590.0, 270.0),
+
+        geometry.Point(810.0, 390.0),
+
+        geometry.Point(875.0, 410.0),
+
+        geometry.Point(910.0, 420.0),
+
+        geometry.Point(950.0, 430.0),
+
+        geometry.Point(980.0, 435.0),
+
+        geometry.Point(1010.0, 435.0),
+
+        geometry.Point(1020.0, 430.0),
+
+        geometry.Point(1035.0, 415.0),
+
+        geometry.Point(1040.0, 400.0),
+
+        geometry.Point(1040.0, 390.0),
+
+        geometry.Point(1035.0, 375.0),
+
+        geometry.Point(920.0, 165.0),
+
+        geometry.Point(910.0, 150.0),
+
+        geometry.Point(395.0, 150.0),
+
+    ]),
+
+}
+
+
+optimistic_up_left_pols = {
+
+    15.5: geometry.Polygon([
+
+        geometry.Point(635.0, 150.0),
+
+        geometry.Point(625.0, 160.0),
+
+        geometry.Point(520.0, 240.0),
+
+        geometry.Point(460.0, 285.0),
+
+        geometry.Point(315.0, 390.0),
+
+        geometry.Point(270.0, 405.0),
+
+        geometry.Point(235.0, 415.0),
+
+        geometry.Point(185.0, 415.0),
+
+        geometry.Point(175.0, 410.0),
+
+        geometry.Point(165.0, 400.0),
+
+        geometry.Point(165.0, 390.0),
+
+        geometry.Point(185.0, 350.0),
+
+        geometry.Point(255.0, 230.0),
+
+        geometry.Point(295.0, 165.0),
+
+        geometry.Point(305.0, 150.0),
+
+        geometry.Point(635.0, 150.0),
+
+    ]),
+
+    17.5: geometry.Polygon([
+
+        geometry.Point(750.0, 150.0),
+
+        geometry.Point(755.0, 155.0),
+
+        geometry.Point(585.0, 260.0),
+
+        geometry.Point(470.0, 330.0),
+
+        geometry.Point(365.0, 390.0),
+
+        geometry.Point(305.0, 410.0),
+
+        geometry.Point(245.0, 425.0),
+
+        geometry.Point(220.0, 430.0),
+
+        geometry.Point(195.0, 430.0),
+
+        geometry.Point(180.0, 425.0),
+
+        geometry.Point(165.0, 410.0),
+
+        geometry.Point(160.0, 400.0),
+
+        geometry.Point(160.0, 390.0),
+
+        geometry.Point(175.0, 360.0),
+
+        geometry.Point(280.0, 175.0),
+
+        geometry.Point(295.0, 150.0),
+
+        geometry.Point(750.0, 150.0),
+
+    ]),
+
+    18.5: geometry.Polygon([
+
+        geometry.Point(805.0, 150.0),
+
+        geometry.Point(810.0, 155.0),
+
+        geometry.Point(780.0, 175.0),
+
+        geometry.Point(655.0, 245.0),
+
+        geometry.Point(610.0, 270.0),
+
+        geometry.Point(390.0, 390.0),
+
+        geometry.Point(325.0, 410.0),
+
+        geometry.Point(290.0, 420.0),
+
+        geometry.Point(250.0, 430.0),
+
+        geometry.Point(220.0, 435.0),
+
+        geometry.Point(190.0, 435.0),
+
+        geometry.Point(180.0, 430.0),
+
+        geometry.Point(165.0, 415.0),
+
+        geometry.Point(160.0, 400.0),
+
+        geometry.Point(160.0, 390.0),
+
+        geometry.Point(165.0, 375.0),
+
+        geometry.Point(280.0, 165.0),
+
+        geometry.Point(290.0, 150.0),
+
+        geometry.Point(805.0, 150.0),
+
+    ]),
+
+    16.5: geometry.Polygon([
+
+        geometry.Point(695.0, 150.0),
+
+        geometry.Point(660.0, 180.0),
+
+        geometry.Point(540.0, 260.0),
+
+        geometry.Point(340.0, 390.0),
+
+        geometry.Point(280.0, 410.0),
+
+        geometry.Point(245.0, 420.0),
+
+        geometry.Point(220.0, 425.0),
+
+        geometry.Point(190.0, 425.0),
+
+        geometry.Point(180.0, 420.0),
+
+        geometry.Point(165.0, 405.0),
+
+        geometry.Point(160.0, 395.0),
+
+        geometry.Point(160.0, 390.0),
+
+        geometry.Point(215.0, 290.0),
+
+        geometry.Point(265.0, 205.0),
+
+        geometry.Point(300.0, 150.0),
+
+        geometry.Point(695.0, 150.0),
+
+    ]),
+
+    15.0: geometry.Polygon([
+
+        geometry.Point(605.0, 150.0),
+
+        geometry.Point(495.0, 240.0),
+
+        geometry.Point(450.0, 275.0),
+
+        geometry.Point(300.0, 390.0),
+
+        geometry.Point(240.0, 410.0),
+
+        geometry.Point(215.0, 415.0),
+
+        geometry.Point(190.0, 415.0),
+
+        geometry.Point(180.0, 410.0),
+
+        geometry.Point(165.0, 395.0),
+
+        geometry.Point(165.0, 390.0),
+
+        geometry.Point(285.0, 185.0),
+
+        geometry.Point(300.0, 160.0),
+
+        geometry.Point(310.0, 150.0),
+
+        geometry.Point(605.0, 150.0),
+
+    ]),
+
+    16.0: geometry.Polygon([
+
+        geometry.Point(665.0, 150.0),
+
+        geometry.Point(645.0, 170.0),
+
+        geometry.Point(595.0, 205.0),
+
+        geometry.Point(430.0, 320.0),
+
+        geometry.Point(325.0, 390.0),
+
+        geometry.Point(250.0, 415.0),
+
+        geometry.Point(225.0, 420.0),
+
+        geometry.Point(185.0, 420.0),
+
+        geometry.Point(175.0, 415.0),
+
+        geometry.Point(165.0, 400.0),
+
+        geometry.Point(160.0, 390.0),
+
+        geometry.Point(265.0, 210.0),
+
+        geometry.Point(280.0, 185.0),
+
+        geometry.Point(300.0, 155.0),
+
+        geometry.Point(310.0, 150.0),
+
+        geometry.Point(665.0, 150.0),
+
+    ]),
+
+    17.0: geometry.Polygon([
+
+        geometry.Point(720.0, 150.0),
+
+        geometry.Point(720.0, 155.0),
+
+        geometry.Point(685.0, 180.0),
+
+        geometry.Point(670.0, 190.0),
+
+        geometry.Point(450.0, 330.0),
+
+        geometry.Point(350.0, 390.0),
+
+        geometry.Point(275.0, 415.0),
+
+        geometry.Point(235.0, 425.0),
+
+        geometry.Point(185.0, 425.0),
+
+        geometry.Point(175.0, 420.0),
+
+        geometry.Point(170.0, 415.0),
+
+        geometry.Point(160.0, 395.0),
+
+        geometry.Point(160.0, 390.0),
+
+        geometry.Point(175.0, 360.0),
+
+        geometry.Point(275.0, 185.0),
+
+        geometry.Point(295.0, 155.0),
+
+        geometry.Point(305.0, 150.0),
+
+        geometry.Point(720.0, 150.0),
+
+    ]),
+
+    18.0: geometry.Polygon([
+
+        geometry.Point(780.0, 150.0),
+
+        geometry.Point(785.0, 155.0),
+
+        geometry.Point(770.0, 165.0),
+
+        geometry.Point(590.0, 270.0),
+
+        geometry.Point(485.0, 330.0),
+
+        geometry.Point(440.0, 355.0),
+
+        geometry.Point(375.0, 390.0),
+
+        geometry.Point(315.0, 410.0),
+
+        geometry.Point(280.0, 420.0),
+
+        geometry.Point(260.0, 425.0),
+
+        geometry.Point(235.0, 430.0),
+
+        geometry.Point(185.0, 430.0),
+
+        geometry.Point(175.0, 425.0),
+
+        geometry.Point(170.0, 420.0),
+
+        geometry.Point(160.0, 400.0),
+
+        geometry.Point(160.0, 390.0),
+
+        geometry.Point(175.0, 360.0),
+
+        geometry.Point(210.0, 295.0),
+
+        geometry.Point(290.0, 155.0),
+
+        geometry.Point(305.0, 150.0),
+
+        geometry.Point(780.0, 150.0),
+
+    ]),
+
+    19.0: geometry.Polygon([
+
+        geometry.Point(835.0, 150.0),
+
+        geometry.Point(835.0, 155.0),
+
+        geometry.Point(805.0, 175.0),
+
+        geometry.Point(695.0, 235.0),
+
+        geometry.Point(630.0, 270.0),
+
+        geometry.Point(545.0, 315.0),
+
+        geometry.Point(450.0, 365.0),
+
+        geometry.Point(400.0, 390.0),
+
+        geometry.Point(385.0, 395.0),
+
+        geometry.Point(335.0, 410.0),
+
+        geometry.Point(300.0, 420.0),
+
+        geometry.Point(240.0, 435.0),
+
+        geometry.Point(190.0, 435.0),
+
+        geometry.Point(180.0, 430.0),
+
+        geometry.Point(165.0, 415.0),
+
+        geometry.Point(160.0, 405.0),
+
+        geometry.Point(155.0, 390.0),
+
+        geometry.Point(210.0, 290.0),
+
+        geometry.Point(275.0, 175.0),
+
+        geometry.Point(285.0, 160.0),
+
+        geometry.Point(290.0, 155.0),
+
+        geometry.Point(300.0, 150.0),
+
+        geometry.Point(835.0, 150.0),
+
+    ]),
+
+    20.0: geometry.Polygon([
+
+        geometry.Point(900.0, 150.0),
+
+        geometry.Point(855.0, 175.0),
+
+        geometry.Point(425.0, 390.0),
+
+        geometry.Point(360.0, 410.0),
+
+        geometry.Point(305.0, 425.0),
+
+        geometry.Point(285.0, 430.0),
+
+        geometry.Point(235.0, 440.0),
+
+        geometry.Point(195.0, 440.0),
+
+        geometry.Point(180.0, 435.0),
+
+        geometry.Point(165.0, 420.0),
+
+        geometry.Point(160.0, 410.0),
+
+        geometry.Point(155.0, 390.0),
+
+        geometry.Point(250.0, 215.0),
+
+        geometry.Point(270.0, 180.0),
+
+        geometry.Point(290.0, 150.0),
+
+        geometry.Point(900.0, 150.0),
+
+    ]),
+
+    19.5: geometry.Polygon([
+
+        geometry.Point(875.0, 150.0),
+
+        geometry.Point(830.0, 175.0),
+
+        geometry.Point(745.0, 220.0),
+
+        geometry.Point(650.0, 270.0),
+
+        geometry.Point(410.0, 390.0),
+
+        geometry.Point(380.0, 400.0),
+
+        geometry.Point(330.0, 415.0),
+
+        geometry.Point(250.0, 435.0),
+
+        geometry.Point(215.0, 440.0),
+
+        geometry.Point(195.0, 440.0),
+
+        geometry.Point(180.0, 435.0),
+
+        geometry.Point(165.0, 420.0),
+
+        geometry.Point(155.0, 390.0),
+
+        geometry.Point(220.0, 270.0),
+
+        geometry.Point(240.0, 235.0),
+
+        geometry.Point(290.0, 150.0),
+
+        geometry.Point(875.0, 150.0),
+
+    ]),
+
+}
+
+
+optimistic_down_left_pols = {
+
+    15.5: geometry.Polygon([
+
+        geometry.Point(635.0, 770.0),
+
+        geometry.Point(625.0, 760.0),
+
+        geometry.Point(520.0, 680.0),
+
+        geometry.Point(460.0, 635.0),
+
+        geometry.Point(315.0, 530.0),
+
+        geometry.Point(270.0, 515.0),
+
+        geometry.Point(235.0, 505.0),
+
+        geometry.Point(185.0, 505.0),
+
+        geometry.Point(175.0, 510.0),
+
+        geometry.Point(165.0, 520.0),
+
+        geometry.Point(165.0, 530.0),
+
+        geometry.Point(185.0, 570.0),
+
+        geometry.Point(255.0, 690.0),
+
+        geometry.Point(295.0, 755.0),
+
+        geometry.Point(305.0, 770.0),
+
+        geometry.Point(635.0, 770.0),
+
+    ]),
+
+    17.5: geometry.Polygon([
+
+        geometry.Point(750.0, 770.0),
+
+        geometry.Point(755.0, 765.0),
+
+        geometry.Point(585.0, 660.0),
+
+        geometry.Point(470.0, 590.0),
+
+        geometry.Point(365.0, 530.0),
+
+        geometry.Point(305.0, 510.0),
+
+        geometry.Point(245.0, 495.0),
+
+        geometry.Point(220.0, 490.0),
+
+        geometry.Point(195.0, 490.0),
+
+        geometry.Point(180.0, 495.0),
+
+        geometry.Point(165.0, 510.0),
+
+        geometry.Point(160.0, 520.0),
+
+        geometry.Point(160.0, 530.0),
+
+        geometry.Point(175.0, 560.0),
+
+        geometry.Point(280.0, 745.0),
+
+        geometry.Point(295.0, 770.0),
+
+        geometry.Point(750.0, 770.0),
+
+    ]),
+
+    18.5: geometry.Polygon([
+
+        geometry.Point(805.0, 770.0),
+
+        geometry.Point(810.0, 765.0),
+
+        geometry.Point(780.0, 745.0),
+
+        geometry.Point(655.0, 675.0),
+
+        geometry.Point(610.0, 650.0),
+
+        geometry.Point(390.0, 530.0),
+
+        geometry.Point(325.0, 510.0),
+
+        geometry.Point(290.0, 500.0),
+
+        geometry.Point(250.0, 490.0),
+
+        geometry.Point(220.0, 485.0),
+
+        geometry.Point(190.0, 485.0),
+
+        geometry.Point(180.0, 490.0),
+
+        geometry.Point(165.0, 505.0),
+
+        geometry.Point(160.0, 520.0),
+
+        geometry.Point(160.0, 530.0),
+
+        geometry.Point(165.0, 545.0),
+
+        geometry.Point(280.0, 755.0),
+
+        geometry.Point(290.0, 770.0),
+
+        geometry.Point(805.0, 770.0),
+
+    ]),
+
+    16.5: geometry.Polygon([
+
+        geometry.Point(695.0, 770.0),
+
+        geometry.Point(660.0, 740.0),
+
+        geometry.Point(540.0, 660.0),
+
+        geometry.Point(340.0, 530.0),
+
+        geometry.Point(280.0, 510.0),
+
+        geometry.Point(245.0, 500.0),
+
+        geometry.Point(220.0, 495.0),
+
+        geometry.Point(190.0, 495.0),
+
+        geometry.Point(180.0, 500.0),
+
+        geometry.Point(165.0, 515.0),
+
+        geometry.Point(160.0, 525.0),
+
+        geometry.Point(160.0, 530.0),
+
+        geometry.Point(215.0, 630.0),
+
+        geometry.Point(265.0, 715.0),
+
+        geometry.Point(300.0, 770.0),
+
+        geometry.Point(695.0, 770.0),
+
+    ]),
+
+    15.0: geometry.Polygon([
+
+        geometry.Point(605.0, 770.0),
+
+        geometry.Point(495.0, 680.0),
+
+        geometry.Point(450.0, 645.0),
+
+        geometry.Point(300.0, 530.0),
+
+        geometry.Point(240.0, 510.0),
+
+        geometry.Point(215.0, 505.0),
+
+        geometry.Point(190.0, 505.0),
+
+        geometry.Point(180.0, 510.0),
+
+        geometry.Point(165.0, 525.0),
+
+        geometry.Point(165.0, 530.0),
+
+        geometry.Point(285.0, 735.0),
+
+        geometry.Point(300.0, 760.0),
+
+        geometry.Point(310.0, 770.0),
+
+        geometry.Point(605.0, 770.0),
+
+    ]),
+
+    16.0: geometry.Polygon([
+
+        geometry.Point(665.0, 770.0),
+
+        geometry.Point(645.0, 750.0),
+
+        geometry.Point(595.0, 715.0),
+
+        geometry.Point(430.0, 600.0),
+
+        geometry.Point(325.0, 530.0),
+
+        geometry.Point(250.0, 505.0),
+
+        geometry.Point(225.0, 500.0),
+
+        geometry.Point(185.0, 500.0),
+
+        geometry.Point(175.0, 505.0),
+
+        geometry.Point(165.0, 520.0),
+
+        geometry.Point(160.0, 530.0),
+
+        geometry.Point(265.0, 710.0),
+
+        geometry.Point(280.0, 735.0),
+
+        geometry.Point(300.0, 765.0),
+
+        geometry.Point(310.0, 770.0),
+
+        geometry.Point(665.0, 770.0),
+
+    ]),
+
+    17.0: geometry.Polygon([
+
+        geometry.Point(720.0, 770.0),
+
+        geometry.Point(720.0, 765.0),
+
+        geometry.Point(685.0, 740.0),
+
+        geometry.Point(670.0, 730.0),
+
+        geometry.Point(450.0, 590.0),
+
+        geometry.Point(350.0, 530.0),
+
+        geometry.Point(275.0, 505.0),
+
+        geometry.Point(235.0, 495.0),
+
+        geometry.Point(185.0, 495.0),
+
+        geometry.Point(175.0, 500.0),
+
+        geometry.Point(170.0, 505.0),
+
+        geometry.Point(160.0, 525.0),
+
+        geometry.Point(160.0, 530.0),
+
+        geometry.Point(175.0, 560.0),
+
+        geometry.Point(275.0, 735.0),
+
+        geometry.Point(295.0, 765.0),
+
+        geometry.Point(305.0, 770.0),
+
+        geometry.Point(720.0, 770.0),
+
+    ]),
+
+    18.0: geometry.Polygon([
+
+        geometry.Point(780.0, 770.0),
+
+        geometry.Point(785.0, 765.0),
+
+        geometry.Point(770.0, 755.0),
+
+        geometry.Point(590.0, 650.0),
+
+        geometry.Point(485.0, 590.0),
+
+        geometry.Point(440.0, 565.0),
+
+        geometry.Point(375.0, 530.0),
+
+        geometry.Point(315.0, 510.0),
+
+        geometry.Point(280.0, 500.0),
+
+        geometry.Point(260.0, 495.0),
+
+        geometry.Point(235.0, 490.0),
+
+        geometry.Point(185.0, 490.0),
+
+        geometry.Point(175.0, 495.0),
+
+        geometry.Point(170.0, 500.0),
+
+        geometry.Point(160.0, 520.0),
+
+        geometry.Point(160.0, 530.0),
+
+        geometry.Point(175.0, 560.0),
+
+        geometry.Point(210.0, 625.0),
+
+        geometry.Point(290.0, 765.0),
+
+        geometry.Point(305.0, 770.0),
+
+        geometry.Point(780.0, 770.0),
+
+    ]),
+
+    19.0: geometry.Polygon([
+
+        geometry.Point(835.0, 770.0),
+
+        geometry.Point(835.0, 765.0),
+
+        geometry.Point(805.0, 745.0),
+
+        geometry.Point(695.0, 685.0),
+
+        geometry.Point(630.0, 650.0),
+
+        geometry.Point(545.0, 605.0),
+
+        geometry.Point(450.0, 555.0),
+
+        geometry.Point(400.0, 530.0),
+
+        geometry.Point(385.0, 525.0),
+
+        geometry.Point(335.0, 510.0),
+
+        geometry.Point(300.0, 500.0),
+
+        geometry.Point(240.0, 485.0),
+
+        geometry.Point(190.0, 485.0),
+
+        geometry.Point(180.0, 490.0),
+
+        geometry.Point(165.0, 505.0),
+
+        geometry.Point(160.0, 515.0),
+
+        geometry.Point(155.0, 530.0),
+
+        geometry.Point(210.0, 630.0),
+
+        geometry.Point(275.0, 745.0),
+
+        geometry.Point(285.0, 760.0),
+
+        geometry.Point(290.0, 765.0),
+
+        geometry.Point(300.0, 770.0),
+
+        geometry.Point(835.0, 770.0),
+
+    ]),
+
+    20.0: geometry.Polygon([
+
+        geometry.Point(900.0, 770.0),
+
+        geometry.Point(855.0, 745.0),
+
+        geometry.Point(425.0, 530.0),
+
+        geometry.Point(360.0, 510.0),
+
+        geometry.Point(305.0, 495.0),
+
+        geometry.Point(285.0, 490.0),
+
+        geometry.Point(235.0, 480.0),
+
+        geometry.Point(195.0, 480.0),
+
+        geometry.Point(180.0, 485.0),
+
+        geometry.Point(165.0, 500.0),
+
+        geometry.Point(160.0, 510.0),
+
+        geometry.Point(155.0, 530.0),
+
+        geometry.Point(250.0, 705.0),
+
+        geometry.Point(270.0, 740.0),
+
+        geometry.Point(290.0, 770.0),
+
+        geometry.Point(900.0, 770.0),
+
+    ]),
+
+    19.5: geometry.Polygon([
+
+        geometry.Point(875.0, 770.0),
+
+        geometry.Point(830.0, 745.0),
+
+        geometry.Point(745.0, 700.0),
+
+        geometry.Point(650.0, 650.0),
+
+        geometry.Point(410.0, 530.0),
+
+        geometry.Point(380.0, 520.0),
+
+        geometry.Point(330.0, 505.0),
+
+        geometry.Point(250.0, 485.0),
+
+        geometry.Point(215.0, 480.0),
+
+        geometry.Point(195.0, 480.0),
+
+        geometry.Point(180.0, 485.0),
+
+        geometry.Point(165.0, 500.0),
+
+        geometry.Point(155.0, 530.0),
+
+        geometry.Point(220.0, 650.0),
+
+        geometry.Point(240.0, 685.0),
+
+        geometry.Point(290.0, 770.0),
+
+        geometry.Point(875.0, 770.0),
+
+    ]),
+
+}
+
+
+optimistic_down_right_pols = {
+
+    15.5: geometry.Polygon([
+
+        geometry.Point(565.0, 770.0),
+
+        geometry.Point(575.0, 760.0),
+
+        geometry.Point(680.0, 680.0),
+
+        geometry.Point(740.0, 635.0),
+
+        geometry.Point(885.0, 530.0),
+
+        geometry.Point(930.0, 515.0),
+
+        geometry.Point(965.0, 505.0),
+
+        geometry.Point(1015.0, 505.0),
+
+        geometry.Point(1025.0, 510.0),
+
+        geometry.Point(1035.0, 520.0),
+
+        geometry.Point(1035.0, 530.0),
+
+        geometry.Point(1015.0, 570.0),
+
+        geometry.Point(945.0, 690.0),
+
+        geometry.Point(905.0, 755.0),
+
+        geometry.Point(895.0, 770.0),
+
+        geometry.Point(565.0, 770.0),
+
+    ]),
+
+    17.5: geometry.Polygon([
+
+        geometry.Point(450.0, 770.0),
+
+        geometry.Point(445.0, 765.0),
+
+        geometry.Point(615.0, 660.0),
+
+        geometry.Point(730.0, 590.0),
+
+        geometry.Point(835.0, 530.0),
+
+        geometry.Point(895.0, 510.0),
+
+        geometry.Point(955.0, 495.0),
+
+        geometry.Point(980.0, 490.0),
+
+        geometry.Point(1005.0, 490.0),
+
+        geometry.Point(1020.0, 495.0),
+
+        geometry.Point(1035.0, 510.0),
+
+        geometry.Point(1040.0, 520.0),
+
+        geometry.Point(1040.0, 530.0),
+
+        geometry.Point(1025.0, 560.0),
+
+        geometry.Point(920.0, 745.0),
+
+        geometry.Point(905.0, 770.0),
+
+        geometry.Point(450.0, 770.0),
+
+    ]),
+
+    18.5: geometry.Polygon([
+
+        geometry.Point(395.0, 770.0),
+
+        geometry.Point(390.0, 765.0),
+
+        geometry.Point(420.0, 745.0),
+
+        geometry.Point(545.0, 675.0),
+
+        geometry.Point(590.0, 650.0),
+
+        geometry.Point(810.0, 530.0),
+
+        geometry.Point(875.0, 510.0),
+
+        geometry.Point(910.0, 500.0),
+
+        geometry.Point(950.0, 490.0),
+
+        geometry.Point(980.0, 485.0),
+
+        geometry.Point(1010.0, 485.0),
+
+        geometry.Point(1020.0, 490.0),
+
+        geometry.Point(1035.0, 505.0),
+
+        geometry.Point(1040.0, 520.0),
+
+        geometry.Point(1040.0, 530.0),
+
+        geometry.Point(1035.0, 545.0),
+
+        geometry.Point(920.0, 755.0),
+
+        geometry.Point(910.0, 770.0),
+
+        geometry.Point(395.0, 770.0),
+
+    ]),
+
+    16.5: geometry.Polygon([
+
+        geometry.Point(505.0, 770.0),
+
+        geometry.Point(540.0, 740.0),
+
+        geometry.Point(660.0, 660.0),
+
+        geometry.Point(860.0, 530.0),
+
+        geometry.Point(920.0, 510.0),
+
+        geometry.Point(955.0, 500.0),
+
+        geometry.Point(980.0, 495.0),
+
+        geometry.Point(1010.0, 495.0),
+
+        geometry.Point(1020.0, 500.0),
+
+        geometry.Point(1035.0, 515.0),
+
+        geometry.Point(1040.0, 525.0),
+
+        geometry.Point(1040.0, 530.0),
+
+        geometry.Point(985.0, 630.0),
+
+        geometry.Point(935.0, 715.0),
+
+        geometry.Point(900.0, 770.0),
+
+        geometry.Point(505.0, 770.0),
+
+    ]),
+
+    15.0: geometry.Polygon([
+
+        geometry.Point(595.0, 770.0),
+
+        geometry.Point(705.0, 680.0),
+
+        geometry.Point(750.0, 645.0),
+
+        geometry.Point(900.0, 530.0),
+
+        geometry.Point(960.0, 510.0),
+
+        geometry.Point(985.0, 505.0),
+
+        geometry.Point(1010.0, 505.0),
+
+        geometry.Point(1020.0, 510.0),
+
+        geometry.Point(1035.0, 525.0),
+
+        geometry.Point(1035.0, 530.0),
+
+        geometry.Point(915.0, 735.0),
+
+        geometry.Point(900.0, 760.0),
+
+        geometry.Point(890.0, 770.0),
+
+        geometry.Point(595.0, 770.0),
+
+    ]),
+
+    16.0: geometry.Polygon([
+
+        geometry.Point(535.0, 770.0),
+
+        geometry.Point(555.0, 750.0),
+
+        geometry.Point(605.0, 715.0),
+
+        geometry.Point(770.0, 600.0),
+
+        geometry.Point(875.0, 530.0),
+
+        geometry.Point(950.0, 505.0),
+
+        geometry.Point(975.0, 500.0),
+
+        geometry.Point(1015.0, 500.0),
+
+        geometry.Point(1025.0, 505.0),
+
+        geometry.Point(1035.0, 520.0),
+
+        geometry.Point(1040.0, 530.0),
+
+        geometry.Point(935.0, 710.0),
+
+        geometry.Point(920.0, 735.0),
+
+        geometry.Point(900.0, 765.0),
+
+        geometry.Point(890.0, 770.0),
+
+        geometry.Point(535.0, 770.0),
+
+    ]),
+
+    17.0: geometry.Polygon([
+
+        geometry.Point(480.0, 770.0),
+
+        geometry.Point(480.0, 765.0),
+
+        geometry.Point(515.0, 740.0),
+
+        geometry.Point(530.0, 730.0),
+
+        geometry.Point(750.0, 590.0),
+
+        geometry.Point(850.0, 530.0),
+
+        geometry.Point(925.0, 505.0),
+
+        geometry.Point(965.0, 495.0),
+
+        geometry.Point(1015.0, 495.0),
+
+        geometry.Point(1025.0, 500.0),
+
+        geometry.Point(1030.0, 505.0),
+
+        geometry.Point(1040.0, 525.0),
+
+        geometry.Point(1040.0, 530.0),
+
+        geometry.Point(1025.0, 560.0),
+
+        geometry.Point(925.0, 735.0),
+
+        geometry.Point(905.0, 765.0),
+
+        geometry.Point(895.0, 770.0),
+
+        geometry.Point(480.0, 770.0),
+
+    ]),
+
+    18.0: geometry.Polygon([
+
+        geometry.Point(420.0, 770.0),
+
+        geometry.Point(415.0, 765.0),
+
+        geometry.Point(430.0, 755.0),
+
+        geometry.Point(610.0, 650.0),
+
+        geometry.Point(715.0, 590.0),
+
+        geometry.Point(760.0, 565.0),
+
+        geometry.Point(825.0, 530.0),
+
+        geometry.Point(885.0, 510.0),
+
+        geometry.Point(920.0, 500.0),
+
+        geometry.Point(940.0, 495.0),
+
+        geometry.Point(965.0, 490.0),
+
+        geometry.Point(1015.0, 490.0),
+
+        geometry.Point(1025.0, 495.0),
+
+        geometry.Point(1030.0, 500.0),
+
+        geometry.Point(1040.0, 520.0),
+
+        geometry.Point(1040.0, 530.0),
+
+        geometry.Point(1025.0, 560.0),
+
+        geometry.Point(990.0, 625.0),
+
+        geometry.Point(910.0, 765.0),
+
+        geometry.Point(895.0, 770.0),
+
+        geometry.Point(420.0, 770.0),
+
+    ]),
+
+    19.0: geometry.Polygon([
+
+        geometry.Point(365.0, 770.0),
+
+        geometry.Point(365.0, 765.0),
+
+        geometry.Point(395.0, 745.0),
+
+        geometry.Point(505.0, 685.0),
+
+        geometry.Point(570.0, 650.0),
+
+        geometry.Point(655.0, 605.0),
+
+        geometry.Point(750.0, 555.0),
+
+        geometry.Point(800.0, 530.0),
+
+        geometry.Point(815.0, 525.0),
+
+        geometry.Point(865.0, 510.0),
+
+        geometry.Point(900.0, 500.0),
+
+        geometry.Point(960.0, 485.0),
+
+        geometry.Point(1010.0, 485.0),
+
+        geometry.Point(1020.0, 490.0),
+
+        geometry.Point(1035.0, 505.0),
+
+        geometry.Point(1040.0, 515.0),
+
+        geometry.Point(1045.0, 530.0),
+
+        geometry.Point(990.0, 630.0),
+
+        geometry.Point(925.0, 745.0),
+
+        geometry.Point(915.0, 760.0),
+
+        geometry.Point(910.0, 765.0),
+
+        geometry.Point(900.0, 770.0),
+
+        geometry.Point(365.0, 770.0),
+
+    ]),
+
+    20.0: geometry.Polygon([
+
+        geometry.Point(300.0, 770.0),
+
+        geometry.Point(345.0, 745.0),
+
+        geometry.Point(775.0, 530.0),
+
+        geometry.Point(840.0, 510.0),
+
+        geometry.Point(895.0, 495.0),
+
+        geometry.Point(915.0, 490.0),
+
+        geometry.Point(965.0, 480.0),
+
+        geometry.Point(1005.0, 480.0),
+
+        geometry.Point(1020.0, 485.0),
+
+        geometry.Point(1035.0, 500.0),
+
+        geometry.Point(1040.0, 510.0),
+
+        geometry.Point(1045.0, 530.0),
+
+        geometry.Point(950.0, 705.0),
+
+        geometry.Point(930.0, 740.0),
+
+        geometry.Point(910.0, 770.0),
+
+        geometry.Point(300.0, 770.0),
+
+    ]),
+
+    19.5: geometry.Polygon([
+
+        geometry.Point(325.0, 770.0),
+
+        geometry.Point(370.0, 745.0),
+
+        geometry.Point(455.0, 700.0),
+
+        geometry.Point(550.0, 650.0),
+
+        geometry.Point(790.0, 530.0),
+
+        geometry.Point(820.0, 520.0),
+
+        geometry.Point(870.0, 505.0),
+
+        geometry.Point(950.0, 485.0),
+
+        geometry.Point(985.0, 480.0),
+
+        geometry.Point(1005.0, 480.0),
+
+        geometry.Point(1020.0, 485.0),
+
+        geometry.Point(1035.0, 500.0),
+
+        geometry.Point(1045.0, 530.0),
+
+        geometry.Point(980.0, 650.0),
+
+        geometry.Point(960.0, 685.0),
+
+        geometry.Point(910.0, 770.0),
+
+        geometry.Point(325.0, 770.0),
+
+    ]),
+
+}
+

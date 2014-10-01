@@ -13,12 +13,12 @@ def make_start_env_im_left():
         return pickle.load(inf)
 
 
-def get_goal_point(env, puck):
+def get_goal_point(env, puck, shift):
     opponent_player = env.world.get_opponent_player()
     if opponent_player.net_back > shortcuts.rink_center(env).x:
-        goal_x = opponent_player.net_front + 20
+        goal_x = opponent_player.net_front + shift
     else:
-        goal_x = opponent_player.net_front - 20
+        goal_x = opponent_player.net_front - shift
     if puck.y < shortcuts.rink_center(env):
         goal_y = opponent_player.net_bottom
     else:
@@ -26,8 +26,8 @@ def get_goal_point(env, puck):
     return geometry.Point(goal_x, goal_y)
 
 
-def make_puck(env, x, y, speed_abs):
-    goal_point = get_goal_point(env, puck=geometry.Point(x, y))
+def make_puck(env, x, y, speed_abs, shift):
+    goal_point = get_goal_point(env, puck=geometry.Point(x, y), shift=shift)
     speed_x = goal_point.x - x
     speed_y = goal_point.y - y
     norm = geometry.vector_abs(speed_x, speed_y)
@@ -48,7 +48,7 @@ def goalie_by_puck(env, puck):
     return prediction.UnitShadow(goalie_x, goalie_y, 0, 0, 0)
 
 
-def find_points(env, speed_abs):
+def find_points(env, speed_abs, shift):
 
     # polygon = experiments.count_puck_attack_area(env, shortcuts.opponent_player(env))
     step = 5
@@ -60,7 +60,7 @@ def find_points(env, speed_abs):
             if y > shortcuts.rink_center(env).y:
                 continue
 
-            puck = make_puck(env, x, y, speed_abs)
+            puck = make_puck(env, x, y, speed_abs, shift)
             goalie = goalie_by_puck(env, puck)
             hit = not prediction.goalie_can_save_straight(
                 env, puck=puck, goalie=goalie)
@@ -96,9 +96,11 @@ def find_points(env, speed_abs):
 env = make_start_env_im_left()
 
 pols = {}
+optimistic_pols = {}
 speed_abs = 15.
 while speed_abs <= 20.:
-    pols[speed_abs] = find_points(env, speed_abs)
+    pols[speed_abs] = find_points(env, speed_abs, 20)
+    optimistic_pols[speed_abs] = find_points(env, speed_abs, 2)
     speed_abs += 0.5
 
 up_right_pols = pols
@@ -126,6 +128,31 @@ for k, v in up_right_pols.iteritems():
     ])
 
 
+optimistic_up_right_pols = optimistic_pols
+rc = shortcuts.rink_center(env)
+
+optimistic_up_left_pols = {}
+for k, v in optimistic_up_right_pols.iteritems():
+    optimistic_up_left_pols[k] = geometry.Polygon([
+        geometry.mirror_x(p, rc.x)
+        for p in v.points
+    ])
+
+optimistic_down_left_pols = {}
+for k, v in optimistic_up_right_pols.iteritems():
+    optimistic_down_left_pols[k] = geometry.Polygon([
+        geometry.mirror_y(geometry.mirror_x(p, rc.x), rc.y)
+        for p in v.points
+    ])
+
+optimistic_down_right_pols = {}
+for k, v in optimistic_up_right_pols.iteritems():
+    optimistic_down_right_pols[k] = geometry.Polygon([
+        geometry.mirror_y(p, rc.y)
+        for p in v.points
+    ])
+
+
 text = """
 import geometry
 
@@ -134,7 +161,11 @@ for name, pols in (
     ("up_right_pols", up_right_pols),
     ("up_left_pols", up_left_pols),
     ("down_left_pols", down_left_pols),
-    ("down_right_pols", down_right_pols)
+    ("down_right_pols", down_right_pols),
+    ("optimistic_up_right_pols", optimistic_up_right_pols),
+    ("optimistic_up_left_pols", optimistic_up_left_pols),
+    ("optimistic_down_left_pols", optimistic_down_left_pols),
+    ("optimistic_down_right_pols", optimistic_down_right_pols)
 ):
     text += """
 {0} = {{
