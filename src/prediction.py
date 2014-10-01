@@ -155,15 +155,16 @@ def goalie_can_save_straight(env, puck=None, player=None, goalie=None):
         # print 'next_puck', next_puck.x, next_puck.y
         # print 'next_goalie', next_goalie.x, next_goalie.y
 
+        # HARDCODE
+        if geometry.distance(next_puck, next_goalie) <= 50:
+            return True
+
         if shortcuts.im_left(env):
             if next_puck.x > shortcuts.opponent_player(env).net_front:
                 return False
         else:
             if next_puck.x < shortcuts.opponent_player(env).net_front:
                 return False
-        # HARDCODE
-        if geometry.distance(next_puck, next_goalie) <= 50:
-            return True
 
         old_puck = next_puck
         old_goalie = next_goalie
