@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from model.HockeyistType import HockeyistType
+from model.HockeyistState import HockeyistState
 
 import geometry
 
@@ -85,19 +86,19 @@ def im_left(env):
 
 def my_field_hockeyists(env):
     return filter(
-        lambda h: h.teammate and h.type != HockeyistType.GOALIE,
+        lambda h: h.teammate and h.type != HockeyistType.GOALIE and h.state != HockeyistState.RESTING,
         env.world.hockeyists)
 
 
 def opponent_field_hockeyists(env):
     return filter(
-        lambda h: not h.teammate and h.type != HockeyistType.GOALIE,
+        lambda h: not h.teammate and h.type != HockeyistType.GOALIE and h.state != HockeyistState.RESTING,
         env.world.hockeyists)
 
 
 def field_hockeyists(env):
     return filter(
-        lambda h: h.type != HockeyistType.GOALIE,
+        lambda h: h.type != HockeyistType.GOALIE and h.state != HockeyistState.RESTING,
         env.world.hockeyists)
 
 
@@ -154,7 +155,7 @@ def take_puck_probability(env, puck_speed):
 
 
 def team_size(env):
-    return max(h.teammate_index for h in env.world.hockeyists)
+    return len(my_field_hockeyists(env))
 
 
 def my_hockeyist_by_index(env, index):

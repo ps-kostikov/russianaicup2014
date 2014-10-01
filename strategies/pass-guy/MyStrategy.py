@@ -229,6 +229,8 @@ class GStrategy3(GStrategy):
 class MyStrategy:
 
     def move(self, me, world, game, move):
+        if me.state == HockeyistState.RESTING:
+            return
 
         env = environment.Environment(me, world, game, move)
 
