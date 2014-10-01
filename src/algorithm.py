@@ -26,7 +26,7 @@ def binary_search(v_min, v_max, func, eps):
 
 
 def best_point_in_interval(p1, p2, f):
-    n = 10
+    n = 2
     dx = (p2.x - p1.x) / n
     dy = (p2.y - p1.y) / n
     points = [
