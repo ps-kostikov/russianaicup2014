@@ -136,16 +136,26 @@ class GStrategy3(GStrategy):
     def __init__(self, env, precount, history):
         super(GStrategy3, self).__init__(env, precount, history)
 
-        defenceman = self.count_defenceman(env)
         if self.hwp is None or self.hwp.player_id != env.me.player_id:
             self.do_get_puck = True
-            self.defenceman = defenceman
-            my_other_hockeyists = filter(
-                lambda h: h.id != defenceman.id,
-                shortcuts.my_field_hockeyists(env)
+            puck_nearest_hockeyist = min(
+                shortcuts.my_field_hockeyists(env),
+                key=lambda h: assessments.ticks_to_reach_point(env, h, env.world.puck)
             )
-            self.active_puck_taker = my_other_hockeyists[0]
-            self.second_puck_taker = my_other_hockeyists[1]
+            self.active_puck_taker = puck_nearest_hockeyist
+            def_nearest_hockeyist = min(
+                filter(
+                    lambda h: h.id != puck_nearest_hockeyist.id,
+                    shortcuts.my_field_hockeyists(env)
+                ),
+                key=lambda h: assessments.ticks_to_reach_point(env, h, self.precount.defence_point)
+            )
+            self.defenceman = def_nearest_hockeyist
+            other_hockeyist = filter(
+                lambda h: h.id not in (def_nearest_hockeyist.id, puck_nearest_hockeyist.id),
+                shortcuts.my_field_hockeyists(env)
+            )[0]
+            self.second_puck_taker = other_hockeyist
         else:
             self.strike_point = self.count_strike_point(env)
             if self.pass_condition(env, self.strike_point):
@@ -156,14 +166,27 @@ class GStrategy3(GStrategy):
                     lambda h: h.id not in (self.pass_maker.id, self.pass_taker.id),
                     shortcuts.my_field_hockeyists(env)
                 )[0]
-                if other.id == defenceman.id:
+                def_nearest_hockeyist = min(
+                    filter(
+                        lambda h: h.id != self.hwp.id,
+                        shortcuts.my_field_hockeyists(env)
+                    ),
+                    key=lambda h: assessments.ticks_to_reach_point(env, h, self.precount.defence_point)
+                )
+                if other.id == def_nearest_hockeyist.id:
                     self.defenceman = other
                 else:
                     self.attack_supporter = other
             else:
                 self.do_goal = True
                 self.attacker = self.hwp
-                self.defenceman = defenceman
+                self.defenceman = min(
+                    filter(
+                        lambda h: h.id != self.attacker.id,
+                        shortcuts.my_field_hockeyists(env)
+                    ),
+                    key=lambda h: assessments.ticks_to_reach_point(env, h, self.precount.defence_point)
+                )
                 other = filter(
                     lambda h: h.id not in (self.attacker.id, self.defenceman.id),
                     shortcuts.my_field_hockeyists(env)
@@ -191,9 +214,6 @@ class GStrategy3(GStrategy):
         if env.world.tick - self.history.game_start_tick <= 75:
             return True
 
-        if self.hwp.id == self.count_defenceman(env).id:
-            return True
-
         pass_taker = self.count_pass_taker(env)
         if geometry.distance(self.hwp, pass_taker) > 200:
             for oh in shortcuts.opponent_field_hockeyists(env):
@@ -204,34 +224,6 @@ class GStrategy3(GStrategy):
             return True
 
         return False
-
-    def count_defenceman(self, env):
-        return min(
-            shortcuts.my_field_hockeyists(env),
-            key=lambda h: h.dexterity
-        )
-
-    def attack_mode3(self, env):
-        defenceman = self.count_defenceman(env)
-        if env.me.id == defenceman.id:
-            if env.me.id == self.hwp.id:
-                self.do_pass(env)
-            else:
-                self.do_protect_goal_actions(env)
-        elif self.hwp.id == env.me.id:
-            self.attack_with_puck(env)
-        else:
-            self.attack_without_puck(env)
-
-    def defence_mode3(self, env):
-        my_nearest_hockeyist = min(
-            shortcuts.my_field_hockeyists(env),
-            key=lambda h: assessments.ticks_to_reach_point(env, h, env.world.puck)
-        )
-        if my_nearest_hockeyist.id == env.me.id:
-            self.do_get_puck_actions(env)
-        else:
-            self.do_protect_goal_actions(env)
 
 
 class MyStrategy:
