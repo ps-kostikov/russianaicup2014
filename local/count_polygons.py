@@ -73,10 +73,16 @@ def find_points(env, speed_abs, shift):
             #     import ipdb; ipdb.set_trace()
             #     pass
 
+    if not points:
+        return None
+
     hull = shapely.geometry.MultiPoint([
         shapely.geometry.Point(p.x, p.y)
         for p in points
     ]).convex_hull
+
+    if hull.type != 'Polygon':
+        return None
 
     pol = geometry.Polygon([
         geometry.Point(c[0], c[1])
@@ -99,8 +105,12 @@ pols = {}
 optimistic_pols = {}
 speed_abs = 15.
 while speed_abs <= 20.:
-    pols[speed_abs] = find_points(env, speed_abs, 20)
-    optimistic_pols[speed_abs] = find_points(env, speed_abs, 2)
+    fp = find_points(env, speed_abs, 20)
+    if fp is not None:
+        pols[speed_abs] = fp
+    fpo = find_points(env, speed_abs, 2)
+    if fpo is not None:
+        optimistic_pols[speed_abs] = fpo
     speed_abs += 0.5
 
 up_right_pols = pols

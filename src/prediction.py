@@ -156,6 +156,8 @@ def goalie_can_save_straight(env, puck=None, player=None, goalie=None):
         # print 'next_goalie', next_goalie.x, next_goalie.y
 
         # HARDCODE
+        if geometry.distance(old_puck, next_goalie) <= 50:
+            return True
         if geometry.distance(next_puck, next_goalie) <= 50:
             return True
 
@@ -181,6 +183,55 @@ def copy_env(env):
     ]
     n_me = copy.copy(env.me)
     return environment.Environment(n_me, n_world, env.game, env.move)
+
+
+class Future(object):
+    def __init__(self, env):
+        self.env = env
+        self.id_to_fh_free = {}
+        self.tick_to_puck = {0: env.world.puck}
+
+        fhs = shortcuts.my_field_hockeyists(self.env) + shortcuts.opponent_field_hockeyists(self.env)
+        for h in fhs:
+            self.id_to_fh_free[h.id] = {0: h}
+
+    def next_field_hockeyist(self, fh):
+        n_fh = copy.copy(fh)
+        n_fh.x = count_xn(fh.x, fh.speed_x, 0, 1, k=friction_factor())
+        n_fh.y = count_xn(fh.y, fh.speed_y, 0, 1, k=friction_factor())
+        n_fh.speed_x = count_vn(fh.speed_x, 0, 1, k=friction_factor())
+        n_fh.speed_y = count_vn(fh.speed_y, 0, 1, k=friction_factor())
+        return n_fh
+
+    def next_puck(self, p):
+        n_p = copy.copy(p)
+        n_p.x = count_xn(p.x, p.speed_x, 0, 1, k=puck_friction_factor())
+        n_p.y = count_xn(p.y, p.speed_y, 0, 1, k=puck_friction_factor())
+        n_p.speed_x = count_vn(p.speed_x, 0, 1, k=puck_friction_factor())
+        n_p.speed_y = count_vn(p.speed_y, 0, 1, k=puck_friction_factor())
+        return n_p
+
+    def get_field_hockeyist_free(self, id, tick):
+        fh_free = self.id_to_fh_free[id]
+        if tick in fh_free:
+            return fh_free[tick]
+        max_predicted_tick = max(fh_free.keys())
+        for t in range(max_predicted_tick + 1, tick + 1):
+            old_h = fh_free[t - 1]
+            nh = self.next_field_hockeyist(old_h)
+            fh_free[t] = nh
+        return fh_free[tick]
+
+    def get_puck_free(self, tick):
+        if tick in self.tick_to_puck:
+            return self.tick_to_puck[tick]
+        max_predicted_tick = max(self.tick_to_puck.keys())
+        for t in range(max_predicted_tick + 1, tick + 1):
+            old_p = self.tick_to_puck[t - 1]
+            n_p = self.next_puck(old_p)
+            self.tick_to_puck[t] = n_p
+        return self.tick_to_puck[tick]
+
 
 
 def count_free_motion_next_tick(env):
